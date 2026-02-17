@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chart Examples — $5T Gap Visualization</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- D3.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+  <style>
+    :root {
+      --royal-blue: #362983;
+      --royal-blue-dark: #2a1f66;
+      --lilac: #E7E2E8;
+      --sky-blue: #CFDFE8;
+      --mint-green: #CEDDC7;
+      --olive-green: #3FA162;
+      --mustard-yellow: #EFB142;
+      --ivory: #F6F1E8;
+      --white: #FFFFFF;
+      --black: #1a1a1a;
+      --gray-600: #4a4a4a;
+      --gray-400: #8a8a8a;
+      --gray-200: #e0e0e0;
+      /* Graph Accent Colors (Purple Gradient) */
+      --graph-primary: #362983;
+      --graph-secondary: #6a5acb;
+      --graph-tertiary: #8577d4;
+      --graph-quaternary: #9f94dd;
+      --font-title: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      background: var(--ivory);
+      color: var(--black);
+      line-height: 1.6;
+    }
+
+    .header {
+      background: var(--royal-blue);
+      color: var(--white);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      color: var(--lilac);
+      font-size: 1.1rem;
+    }
+
+    .example-section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .example-section:last-child {
+      border-bottom: none;
+    }
+
+    .example-title {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: var(--royal-blue);
+      margin-bottom: 0.5rem;
+    }
+
+    .example-desc {
+      color: var(--gray-600);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    .chart-container {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem;
+      min-height: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .replay-btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--mustard-yellow);
+      color: var(--black);
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .replay-btn:hover {
+      background: #d9a03a;
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       EXAMPLE 1: Stacked Proportional (Donut)
+       ============================================ */
+    #example1-chart {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #example1-chart svg {
+      overflow: visible;
+    }
+
+    .donut-label {
+      font-family: var(--font-title);
+      font-size: 2.5rem;
+      font-weight: 700;
+      fill: var(--royal-blue);
+    }
+
+    .donut-sublabel {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      fill: var(--gray-600);
+    }
+
+    .legend {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    /* ============================================
+       EXAMPLE 2: Animated Fill (Thermometer)
+       ============================================ */
+    #example2-chart {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .thermometer-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .thermometer-bar {
+      width: 100%;
+      height: 80px;
+      background: var(--gray-200);
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .thermometer-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      display: flex;
+      border-radius: 40px 0 0 40px;
+    }
+
+    .fill-segment {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .fill-philanthropy {
+      background: var(--mint-green);
+      color: var(--black);
+    }
+
+    .fill-traditional {
+      background: var(--sky-blue);
+      color: var(--black);
+    }
+
+    .thermometer-gap {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--royal-blue);
+      font-size: 1.1rem;
+    }
+
+    .thermometer-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+
+    .thermometer-target {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .thermometer-target-number {
+      font-family: var(--font-title);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--mustard-yellow);
+    }
+
+    .thermometer-target-label {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+
+    /* ============================================
+       EXAMPLE 3: Waffle Chart
+       ============================================ */
+    #example3-chart {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .waffle-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      max-width: 400px;
+    }
+
+    .waffle-cell {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      background: var(--gray-200);
+      transition: all 0.3s ease;
+    }
+
+    .waffle-cell.philanthropy {
+      background: var(--graph-primary);
+    }
+
+    .waffle-cell.traditional {
+      background: var(--graph-secondary);
+    }
+
+    .waffle-cell.gap {
+      background: var(--graph-quaternary);
+    }
+
+    .waffle-legend {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .waffle-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--gray-600);
+    }
+
+    .waffle-legend-box {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+    }
+
+    /* ============================================
+       EXAMPLE 4: Counter Comparison
+       ============================================ */
+    #example4-chart {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .counter-row {
+      display: flex;
+      gap: 3rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .counter-box {
+      text-align: center;
+      padding: 2rem;
+      background: var(--ivory);
+      border-radius: 16px;
+      min-width: 200px;
+    }
+
+    .counter-box.highlight {
+      background: var(--royal-blue);
+    }
+
+    .counter-number {
+      font-family: var(--font-title);
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--royal-blue);
+      line-height: 1;
+    }
+
+    .counter-box.highlight .counter-number {
+      color: var(--mustard-yellow);
+    }
+
+    .counter-suffix {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--royal-blue);
+    }
+
+    .counter-box.highlight .counter-suffix {
+      color: var(--mustard-yellow);
+    }
+
+    .counter-label {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      margin-top: 0.5rem;
+    }
+
+    .counter-box.highlight .counter-label {
+      color: var(--lilac);
+    }
+
+    .counter-vs {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      color: var(--gray-400);
+    }
+
+    .counter-deficit {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(90deg, var(--mint-green), var(--mustard-yellow));
+      border-radius: 50px;
+    }
+
+    .deficit-arrow {
+      font-size: 1.5rem;
+    }
+
+    .deficit-text {
+      font-weight: 600;
+      color: var(--royal-blue);
+    }
+
+    /* ============================================
+       EXAMPLE 5: Sankey/Flow Diagram
+       ============================================ */
+    #example5-chart {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #example5-chart svg {
+      overflow: visible;
+    }
+
+    .sankey-node text {
+      font-family: var(--font-body);
+      font-size: 12px;
+      fill: var(--gray-600);
+    }
+
+    .sankey-node rect {
+      rx: 4;
+      ry: 4;
+    }
+
+    .sankey-link {
+      fill: none;
+      stroke-opacity: 0.4;
+    }
+
+    .sankey-link:hover {
+      stroke-opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <h1>$5T Gap — Visualization Options</h1>
+    <p>Five different ways to show the financing gap</p>
+  </header>
+
+  <!-- Example 1: Stacked Proportional (Donut) -->
+  <section class="example-section">
+    <h2 class="example-title">Example 1: Stacked Proportional Visualization</h2>
+    <p class="example-desc">A donut chart showing the proportions — philanthropy, traditional finance, and the gap — with the gap highlighted as the dominant segment.</p>
+    <div class="chart-container">
+      <div id="example1-chart"></div>
+    </div>
+    <button class="replay-btn" onclick="replayExample1()">Replay Animation</button>
+  </section>
+
+  <!-- Example 2: Animated Fill -->
+  <section class="example-section">
+    <h2 class="example-title">Example 2: Animated Fill (Thermometer)</h2>
+    <p class="example-desc">A horizontal bar that fills up with available capital, leaving the unfilled portion as a dramatic visual representation of "The Gap."</p>
+    <div class="chart-container">
+      <div id="example2-chart">
+        <div class="thermometer-container">
+          <div class="thermometer-bar">
+            <div class="thermometer-fill" id="thermo-fill">
+              <div class="fill-segment fill-philanthropy" id="fill-phil">$0.3T</div>
+              <div class="fill-segment fill-traditional" id="fill-trad">$1.2T</div>
+            </div>
+            <div class="thermometer-gap" id="thermo-gap">
+              <span>$3.5T GAP</span>
+            </div>
+          </div>
+          <div class="thermometer-labels">
+            <span>$0</span>
+            <span>$5 Trillion Needed</span>
+          </div>
+          <div class="thermometer-target">
+            <div class="thermometer-target-number">70%</div>
+            <div class="thermometer-target-label">of needed capital is missing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="replay-btn" onclick="replayExample2()">Replay Animation</button>
+  </section>
+
+  <!-- Example 3: Waffle Chart -->
+  <section class="example-section">
+    <h2 class="example-title">Example 3: Waffle Chart</h2>
+    <p class="example-desc">100 squares where each represents $50B. The colored squares fill in to show what's available, leaving the rest as the gap. More visceral than bars.</p>
+    <div class="chart-container">
+      <div id="example3-chart">
+        <div class="waffle-grid" id="waffle-grid"></div>
+        <div class="waffle-legend">
+          <div class="waffle-legend-item">
+            <div class="waffle-legend-box" style="background: var(--graph-primary)"></div>
+            <span>Philanthropy ($0.3T)</span>
+          </div>
+          <div class="waffle-legend-item">
+            <div class="waffle-legend-box" style="background: var(--graph-secondary)"></div>
+            <span>Traditional Finance ($1.2T)</span>
+          </div>
+          <div class="waffle-legend-item">
+            <div class="waffle-legend-box" style="background: var(--graph-quaternary)"></div>
+            <span>The Gap ($3.5T)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="replay-btn" onclick="replayExample3()">Replay Animation</button>
+  </section>
+
+  <!-- Example 4: Counter Comparison -->
+  <section class="example-section">
+    <h2 class="example-title">Example 4: Counter Comparison</h2>
+    <p class="example-desc">Large animated counters showing "Available" vs "Needed" side-by-side, with a visual deficit indicator. Simple but impactful.</p>
+    <div class="chart-container">
+      <div id="example4-chart">
+        <div class="counter-row">
+          <div class="counter-box">
+            <span class="counter-number" id="counter-available">0</span><span class="counter-suffix">T</span>
+            <div class="counter-label">Capital Available</div>
+          </div>
+          <span class="counter-vs">vs</span>
+          <div class="counter-box highlight">
+            <span class="counter-number" id="counter-needed">0</span><span class="counter-suffix">T</span>
+            <div class="counter-label">Capital Needed</div>
+          </div>
+        </div>
+        <div class="counter-deficit" id="counter-deficit" style="opacity: 0;">
+          <span class="deficit-arrow">→</span>
+          <span class="deficit-text">$3.5 Trillion Gap</span>
+          <span class="deficit-arrow">←</span>
+        </div>
+      </div>
+    </div>
+    <button class="replay-btn" onclick="replayExample4()">Replay Animation</button>
+  </section>
+
+  <!-- Example 5: Sankey / Flow Diagram -->
+  <section class="example-section">
+    <h2 class="example-title">Example 5: Sankey / Flow Diagram</h2>
+    <p class="example-desc">Shows capital flowing from sources toward the $5T goal, visualizing where the money comes from and highlighting the massive shortfall.</p>
+    <div class="chart-container">
+      <div id="example5-chart"></div>
+    </div>
+    <button class="replay-btn" onclick="replayExample5()">Replay Animation</button>
+  </section>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ============================================
+    // EXAMPLE 1: Donut Chart
+    // ============================================
+    function initExample1() {
+      const container = document.getElementById('example1-chart');
+      container.innerHTML = '';
+
+      const width = 300;
+      const height = 300;
+      const radius = Math.min(width, height) / 2;
+
+      const data = [
+        { label: 'Philanthropy', value: 0.3, color: '#CEDDC7' },
+        { label: 'Traditional Finance', value: 1.2, color: '#CFDFE8' },
+        { label: 'The Gap', value: 3.5, color: '#EFB142' }
+      ];
+
+      const svg = d3.select(container)
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr('transform', `translate(${width/2}, ${height/2})`);
+
+      const pie = d3.pie()
+        .value(d => d.value)
+        .sort(null)
+        .startAngle(-Math.PI / 2)
+        .endAngle(Math.PI * 1.5);
+
+      const arc = d3.arc()
+        .innerRadius(radius * 0.6)
+        .outerRadius(radius * 0.9);
+
+      const arcs = svg.selectAll('.arc')
+        .data(pie(data))
+        .enter()
+        .append('g')
+        .attr('class', 'arc');
+
+      arcs.append('path')
+        .attr('fill', d => d.data.color)
+        .attr('d', arc)
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 2)
+        .each(function(d) {
+          this._current = { startAngle: d.startAngle, endAngle: d.startAngle };
+        })
+        .transition()
+        .duration(1500)
+        .delay((d, i) => i * 300)
+        .attrTween('d', function(d) {
+          const interpolate = d3.interpolate(this._current, d);
+          this._current = interpolate(1);
+          return t => arc(interpolate(t));
+        });
+
+      // Center text
+      svg.append('text')
+        .attr('class', 'donut-label')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '0.1em')
+        .text('$3.5T');
+
+      svg.append('text')
+        .attr('class', 'donut-sublabel')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '1.8em')
+        .text('The Gap');
+
+      // Legend
+      const legend = d3.select(container)
+        .append('div')
+        .attr('class', 'legend');
+
+      data.forEach(d => {
+        const item = legend.append('div').attr('class', 'legend-item');
+        item.append('div')
+          .attr('class', 'legend-dot')
+          .style('background', d.color);
+        item.append('span').text(`${d.label}: $${d.value}T`);
+      });
+    }
+
+    function replayExample1() {
+      initExample1();
+    }
+
+    // ============================================
+    // EXAMPLE 2: Thermometer
+    // ============================================
+    function initExample2() {
+      const philWidth = (0.3 / 5) * 100;
+      const tradWidth = (1.2 / 5) * 100;
+      const gapWidth = (3.5 / 5) * 100;
+
+      const fillPhil = document.getElementById('fill-phil');
+      const fillTrad = document.getElementById('fill-trad');
+      const thermoGap = document.getElementById('thermo-gap');
+
+      // Reset
+      gsap.set(fillPhil, { width: '0%', opacity: 0 });
+      gsap.set(fillTrad, { width: '0%', opacity: 0 });
+      gsap.set(thermoGap, { opacity: 0, width: gapWidth + '%' });
+
+      // Animate
+      gsap.to(fillPhil, { width: philWidth + '%', opacity: 1, duration: 1, ease: 'power2.out' });
+      gsap.to(fillTrad, { width: tradWidth + '%', opacity: 1, duration: 1, delay: 0.5, ease: 'power2.out' });
+      gsap.to(thermoGap, { opacity: 1, duration: 0.8, delay: 1.5, ease: 'power2.out' });
+    }
+
+    function replayExample2() {
+      initExample2();
+    }
+
+    // ============================================
+    // EXAMPLE 3: Waffle Chart
+    // ============================================
+    function initExample3() {
+      const grid = document.getElementById('waffle-grid');
+      grid.innerHTML = '';
+
+      // 100 cells, each = $50B
+      // Philanthropy: 6 cells ($0.3T)
+      // Traditional: 24 cells ($1.2T)
+      // Gap: 70 cells ($3.5T)
+      const cells = [];
+      for (let i = 0; i < 6; i++) cells.push('philanthropy');
+      for (let i = 0; i < 24; i++) cells.push('traditional');
+      for (let i = 0; i < 70; i++) cells.push('gap');
+
+      cells.forEach((type, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'waffle-cell';
+        cell.dataset.type = type;
+        grid.appendChild(cell);
+
+        gsap.to(cell, {
+          delay: i * 0.02,
+          duration: 0.3,
+          onStart: () => cell.classList.add(type)
+        });
+      });
+    }
+
+    function replayExample3() {
+      const cells = document.querySelectorAll('.waffle-cell');
+      cells.forEach(cell => {
+        cell.classList.remove('philanthropy', 'traditional', 'gap');
+      });
+      setTimeout(initExample3, 100);
+    }
+
+    // ============================================
+    // EXAMPLE 4: Counter Comparison
+    // ============================================
+    function initExample4() {
+      const availableEl = document.getElementById('counter-available');
+      const neededEl = document.getElementById('counter-needed');
+      const deficitEl = document.getElementById('counter-deficit');
+
+      gsap.set(deficitEl, { opacity: 0, y: 20 });
+
+      gsap.fromTo(availableEl,
+        { innerText: 0 },
+        {
+          innerText: 1.5,
+          duration: 2,
+          ease: 'power2.out',
+          snap: { innerText: 0.1 },
+          onUpdate: function() {
+            availableEl.innerText = parseFloat(availableEl.innerText).toFixed(1);
+          }
+        }
+      );
+
+      gsap.fromTo(neededEl,
+        { innerText: 0 },
+        {
+          innerText: 5,
+          duration: 2,
+          ease: 'power2.out',
+          snap: { innerText: 1 },
+          onUpdate: function() {
+            neededEl.innerText = Math.round(parseFloat(neededEl.innerText));
+          }
+        }
+      );
+
+      gsap.to(deficitEl, { opacity: 1, y: 0, duration: 0.6, delay: 2.2, ease: 'back.out(1.5)' });
+    }
+
+    function replayExample4() {
+      initExample4();
+    }
+
+    // ============================================
+    // EXAMPLE 5: Sankey-style Flow
+    // ============================================
+    function initExample5() {
+      const container = document.getElementById('example5-chart');
+      container.innerHTML = '';
+
+      const width = 600;
+      const height = 300;
+
+      const svg = d3.select(container)
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+      // Simplified flow visualization
+      const sources = [
+        { name: 'Philanthropy', value: 0.3, y: 50, color: '#CEDDC7' },
+        { name: 'Traditional Finance', value: 1.2, y: 150, color: '#CFDFE8' },
+        { name: 'Innovative Finance', value: 0, y: 250, color: '#E7E2E8' }
+      ];
+
+      const target = { name: '$5T Goal', x: 500, y: 150 };
+
+      // Draw source nodes
+      sources.forEach((s, i) => {
+        const nodeHeight = Math.max(30, s.value * 50);
+
+        svg.append('rect')
+          .attr('x', 50)
+          .attr('y', s.y - nodeHeight/2)
+          .attr('width', 20)
+          .attr('height', nodeHeight)
+          .attr('fill', s.color)
+          .attr('rx', 4)
+          .attr('opacity', 0)
+          .transition()
+          .duration(600)
+          .delay(i * 200)
+          .attr('opacity', 1);
+
+        svg.append('text')
+          .attr('x', 10)
+          .attr('y', s.y + 5)
+          .attr('font-family', 'Poppins, sans-serif')
+          .attr('font-size', '12px')
+          .attr('fill', '#4a4a4a')
+          .text(s.name)
+          .attr('opacity', 0)
+          .transition()
+          .duration(600)
+          .delay(i * 200)
+          .attr('opacity', 1);
+
+        // Flow line
+        if (s.value > 0) {
+          const path = svg.append('path')
+            .attr('d', `M70,${s.y} C250,${s.y} 350,${target.y} ${target.x - 60},${target.y}`)
+            .attr('fill', 'none')
+            .attr('stroke', s.color)
+            .attr('stroke-width', s.value * 30)
+            .attr('opacity', 0.6);
+
+          const totalLength = path.node().getTotalLength();
+          path
+            .attr('stroke-dasharray', totalLength)
+            .attr('stroke-dashoffset', totalLength)
+            .transition()
+            .duration(1500)
+            .delay(600 + i * 200)
+            .attr('stroke-dashoffset', 0);
+        }
+      });
+
+      // Target node (the gap visualization)
+      const targetGroup = svg.append('g')
+        .attr('transform', `translate(${target.x - 40}, 50)`)
+        .attr('opacity', 0);
+
+      // Total bar (what's needed)
+      targetGroup.append('rect')
+        .attr('width', 30)
+        .attr('height', 200)
+        .attr('fill', '#e0e0e0')
+        .attr('rx', 4);
+
+      // Filled portion (what's available)
+      targetGroup.append('rect')
+        .attr('y', 140) // 70% gap means 30% filled at bottom
+        .attr('width', 30)
+        .attr('height', 60)
+        .attr('fill', '#3FA162')
+        .attr('rx', 4);
+
+      // Gap indicator
+      targetGroup.append('rect')
+        .attr('y', 0)
+        .attr('width', 30)
+        .attr('height', 140)
+        .attr('fill', '#EFB142')
+        .attr('rx', 4)
+        .attr('opacity', 0.8);
+
+      targetGroup.append('text')
+        .attr('x', 45)
+        .attr('y', 70)
+        .attr('font-family', 'Poppins, sans-serif').attr('font-weight', '700')
+        .attr('font-size', '18px')
+        .attr('font-weight', '600')
+        .attr('fill', '#362983')
+        .text('$3.5T');
+
+      targetGroup.append('text')
+        .attr('x', 45)
+        .attr('y', 90)
+        .attr('font-family', 'Poppins, sans-serif')
+        .attr('font-size', '12px')
+        .attr('fill', '#4a4a4a')
+        .text('Gap');
+
+      targetGroup.append('text')
+        .attr('x', 45)
+        .attr('y', 180)
+        .attr('font-family', 'Poppins, sans-serif')
+        .attr('font-size', '11px')
+        .attr('fill', '#4a4a4a')
+        .text('$1.5T filled');
+
+      targetGroup.transition()
+        .duration(800)
+        .delay(1800)
+        .attr('opacity', 1);
+    }
+
+    function replayExample5() {
+      initExample5();
+    }
+
+    // ============================================
+    // Initialize all on load
+    // ============================================
+    document.addEventListener('DOMContentLoaded', () => {
+      initExample1();
+      initExample2();
+      initExample3();
+      initExample4();
+      initExample5();
+    });
+  </script>
+
+</body>
+</html>

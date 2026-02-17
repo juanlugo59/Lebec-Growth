@@ -1,0 +1,501 @@
+/* Financial Projections Charts - Dark Theme
+   ========================================== */
+
+/* CSS Variables - Brand Colors */
+:root {
+  --royal-blue: #362983;
+  --royal-blue-dark: #2a1f66;
+  --purple-58: #6a5acb;
+  --purple-65: #8577d4;
+  --purple-73: #9f94dd;
+  --lilac: #E7E2E8;
+  --sky-blue: #CFDFE8;
+  --mint-green: #CEDDC7;
+  --olive-green: #3FA162;
+  --mustard-yellow: #EFB142;
+  --ivory: #F6F1E8;
+  --white: #FFFFFF;
+  --black: #1a1a1a;
+  --gray-600: #4a4a4a;
+  --gray-400: #8a8a8a;
+  --gray-200: #e0e0e0;
+
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-title: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --line-height-body: 1.6;
+  --line-height-tight: 1.4;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: var(--line-height-body);
+  color: var(--white);
+  background-color: var(--royal-blue);
+}
+
+/* =============================================
+   DEV HEADER (minimal, for navigation only)
+   ============================================= */
+.page-header {
+  background: rgba(0,0,0,0.2);
+  color: var(--white);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-header h1 {
+  font-family: var(--font-title);
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.page-header p {
+  display: none;
+}
+
+.back-link {
+  color: var(--mustard-yellow);
+  text-decoration: none;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.back-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* =============================================
+   FINANCIALS SECTION
+   ============================================= */
+.financials-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* Section Title */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 3rem;
+  line-height: 1.1;
+}
+
+/* =============================================
+   HIGHLIGHT CARDS
+   ============================================= */
+.financials-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 1000px) {
+  .financials-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .financials-grid { grid-template-columns: 1fr; }
+}
+
+.financial-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.financial-card:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--mustard-yellow);
+}
+
+.financial-value {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--white);
+  margin-bottom: 0.06rem;
+  line-height: 1.1;
+}
+
+.financial-label {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--lilac);
+  line-height: 1.5;
+}
+
+/* =============================================
+   FLIP CARD (Dark Theme)
+   ============================================= */
+.flip-card-container {
+  perspective: 2000px;
+}
+
+.flip-card {
+  position: relative;
+  width: 100%;
+  min-height: 600px;
+  transform-style: preserve-3d;
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  min-height: 600px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-card-front {
+  transform: rotateY(0deg);
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Flipped state: rotate each face individually (Firefox 3D compat) */
+.flip-card.flipped .flip-card-front {
+  transform: rotateY(-180deg);
+}
+
+.flip-card.flipped .flip-card-back {
+  transform: rotateY(0deg);
+}
+
+/* Flip Button */
+.flip-icon-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--gray-200);
+  border-radius: 8px;
+  background: var(--ivory);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.flip-icon-btn:hover {
+  border-color: var(--royal-blue);
+  background: var(--lilac);
+}
+
+.flip-icon-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--royal-blue);
+  transition: transform 0.3s;
+}
+
+.flip-icon-btn:hover svg {
+  transform: rotateY(180deg);
+}
+
+.flip-hint {
+  position: absolute;
+  top: 1.5rem;
+  right: 4.5rem;
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.flip-icon-btn:hover + .flip-hint,
+.flip-hint:hover {
+  opacity: 1;
+}
+
+/* Flip Card Content */
+.flip-card-front h2,
+.flip-card-back h2 {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--royal-blue);
+  margin-bottom: 0.25rem;
+}
+
+.flip-card-front .chart-description,
+.flip-card-back .chart-description {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: var(--line-height-tight);
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+}
+
+/* Chart Container */
+.chart-container {
+  width: 100%;
+  min-height: 400px;
+  position: relative;
+}
+
+/* =============================================
+   D3 CHART STYLES
+   ============================================= */
+.axis path,
+.axis line {
+  stroke: var(--gray-200);
+}
+
+.axis text {
+  fill: var(--gray-600);
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+
+.grid line {
+  stroke: var(--gray-200);
+  stroke-opacity: 0.5;
+  stroke-dasharray: 2,2;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+/* Chart Lines */
+.line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.line-aum { stroke: var(--royal-blue); }
+.line-revenue { stroke: var(--purple-58); }
+.line-ebitda { stroke: var(--purple-65); }
+
+/* Dots */
+.dot {
+  cursor: pointer;
+  transition: r 0.2s;
+}
+
+.dot:hover {
+  r: 8;
+}
+
+/* =============================================
+   TOOLTIP (works on dark)
+   ============================================= */
+.tooltip {
+  position: absolute;
+  background: rgba(0,0,0,0.9);
+  color: var(--white);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.tooltip.active {
+  opacity: 1;
+}
+
+.tooltip-title {
+  font-weight: 700;
+  color: var(--mustard-yellow);
+  margin-bottom: 6px;
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2px 0;
+}
+
+.tooltip-label {
+  color: rgba(255,255,255,0.6);
+}
+
+.tooltip-value {
+  font-weight: 600;
+}
+
+/* =============================================
+   LEGEND
+   ============================================= */
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--black);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.legend-item:hover {
+  opacity: 0.7;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+/* =============================================
+   TOGGLE CONTROLS
+   ============================================= */
+.chart-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  padding: 0.4rem 1rem;
+  background: var(--ivory);
+  border: 2px solid var(--gray-200);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn:hover {
+  border-color: var(--royal-blue);
+}
+
+.toggle-btn.active {
+  color: var(--white);
+}
+
+.toggle-btn.active[data-metric="aum"] {
+  background: var(--royal-blue);
+  border-color: var(--royal-blue);
+}
+
+.toggle-btn.active[data-metric="revenue"] {
+  background: var(--purple-58);
+  border-color: var(--purple-58);
+}
+
+.toggle-btn.active[data-metric="ebitda"] {
+  background: var(--purple-65);
+  border-color: var(--purple-65);
+}
+
+/* =============================================
+   DATA TABLE
+   ============================================= */
+.data-table {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.6rem 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: var(--white);
+  z-index: 1;
+}
+
+.data-table th {
+  background: var(--lilac);
+  color: var(--royal-blue);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.data-table th:first-child {
+  background: var(--lilac);
+}
+
+.data-table td {
+  color: var(--black);
+  white-space: nowrap;
+}
+
+.data-table tr:hover td {
+  background: var(--ivory);
+}
+
+.data-table tr:hover td:first-child {
+  background: var(--ivory);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+  .financials-section {
+    padding: 3rem 1rem;
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    padding: 1.5rem;
+  }
+
+  .chart-container {
+    min-height: 300px;
+  }
+}
