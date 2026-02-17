@@ -160,9 +160,18 @@ let heroSketch = function(p) {
     let breathe2 = p.sin(p.frameCount * 0.03 + 1) * 0.5 + 0.5;
     let breathe3 = p.sin(p.frameCount * 0.025 + 2) * 0.5 + 0.5;
 
-    let band1Width = 150 + breathe * 30;
-    let band2Width = 200 + breathe2 * 40;
-    let band3Width = 150 + breathe3 * 25;
+    // Wave positions — hugging the edges
+    let w = p.width;
+    let wave1Base = w * 0.035;   // innermost wave
+    let wave2Base = w * 0.075;   // middle wave
+    let wave3Base = w * 0.125;   // outermost wave
+    let wave1Amp = w * 0.02;
+    let wave2Amp = w * 0.025;
+    let wave3Amp = w * 0.02;
+
+    let band1Width = w * 0.045 + breathe * w * 0.01;
+    let band2Width = w * 0.06 + breathe2 * w * 0.015;
+    let band3Width = w * 0.045 + breathe3 * w * 0.01;
 
     // --- LEFT SIDE WAVES ---
 
@@ -172,7 +181,7 @@ let heroSketch = function(p) {
     p.beginShape();
     p.vertex(0, 0);
     for (let y = 0; y <= p.height; y += 10) {
-      p.vertex(400 + p.sin(y * 0.006 + p.frameCount * 0.025) * 60, y);
+      p.vertex(wave3Base + p.sin(y * 0.006 + p.frameCount * 0.025) * wave3Amp, y);
     }
     p.vertex(0, p.height);
     p.vertex(0, 0);
@@ -184,7 +193,7 @@ let heroSketch = function(p) {
     p.beginShape();
     p.vertex(0, 0);
     for (let y = 0; y <= p.height; y += 10) {
-      p.vertex(280 + p.sin(y * 0.012 + p.frameCount * 0.015) * 80, y);
+      p.vertex(wave2Base + p.sin(y * 0.012 + p.frameCount * 0.015) * wave2Amp, y);
     }
     p.vertex(0, p.height);
     p.vertex(0, 0);
@@ -196,7 +205,7 @@ let heroSketch = function(p) {
     p.beginShape();
     p.vertex(0, 0);
     for (let y = 0; y <= p.height; y += 10) {
-      p.vertex(150 + p.sin(y * 0.008 + p.frameCount * 0.02) * 70, y);
+      p.vertex(wave1Base + p.sin(y * 0.008 + p.frameCount * 0.02) * wave1Amp, y);
     }
     p.vertex(0, p.height);
     p.vertex(0, 0);
@@ -210,7 +219,7 @@ let heroSketch = function(p) {
     p.beginShape();
     p.vertex(p.width, 0);
     for (let y = 0; y <= p.height; y += 10) {
-      p.vertex(p.width - 400 - p.sin(y * 0.006 + p.frameCount * 0.025) * 60, y);
+      p.vertex(w - wave3Base - p.sin(y * 0.006 + p.frameCount * 0.025) * wave3Amp, y);
     }
     p.vertex(p.width, p.height);
     p.vertex(p.width, 0);
@@ -222,7 +231,7 @@ let heroSketch = function(p) {
     p.beginShape();
     p.vertex(p.width, 0);
     for (let y = 0; y <= p.height; y += 10) {
-      p.vertex(p.width - 280 - p.sin(y * 0.012 + p.frameCount * 0.015) * 80, y);
+      p.vertex(w - wave2Base - p.sin(y * 0.012 + p.frameCount * 0.015) * wave2Amp, y);
     }
     p.vertex(p.width, p.height);
     p.vertex(p.width, 0);
@@ -234,7 +243,7 @@ let heroSketch = function(p) {
     p.beginShape();
     p.vertex(p.width, 0);
     for (let y = 0; y <= p.height; y += 10) {
-      p.vertex(p.width - 150 - p.sin(y * 0.008 + p.frameCount * 0.02) * 70, y);
+      p.vertex(w - wave1Base - p.sin(y * 0.008 + p.frameCount * 0.02) * wave1Amp, y);
     }
     p.vertex(p.width, p.height);
     p.vertex(p.width, 0);
@@ -248,13 +257,13 @@ let heroSketch = function(p) {
       let fc015 = p.frameCount * 0.015;
       let fc025 = p.frameCount * 0.025;
 
-      let x1L = 150 + p.sin(y * 0.008 + fc02) * 70;
-      let x2L = 280 + p.sin(y * 0.012 + fc015) * 80;
-      let x3L = 400 + p.sin(y * 0.006 + fc025) * 60;
+      let x1L = wave1Base + p.sin(y * 0.008 + fc02) * wave1Amp;
+      let x2L = wave2Base + p.sin(y * 0.012 + fc015) * wave2Amp;
+      let x3L = wave3Base + p.sin(y * 0.006 + fc025) * wave3Amp;
 
-      let x1R = p.width - 150 - p.sin(y * 0.008 + fc02) * 70;
-      let x2R = p.width - 280 - p.sin(y * 0.012 + fc015) * 80;
-      let x3R = p.width - 400 - p.sin(y * 0.006 + fc025) * 60;
+      let x1R = w - wave1Base - p.sin(y * 0.008 + fc02) * wave1Amp;
+      let x2R = w - wave2Base - p.sin(y * 0.012 + fc015) * wave2Amp;
+      let x3R = w - wave3Base - p.sin(y * 0.006 + fc025) * wave3Amp;
 
       // Left wave lines
       cStroke1.setAlpha(150 + breathe * 100);

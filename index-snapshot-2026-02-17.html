@@ -314,6 +314,7 @@
               <p class="flip-card-desc">Interactive multi-line chart with hover tooltips showing all metrics per year. Toggle metrics on/off below.</p>
 
               <div class="chart-controls" id="controls-financials">
+                <button class="toggle-btn active" data-metric="aum">AUM</button>
                 <button class="toggle-btn active" data-metric="revenue">Revenue</button>
                 <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
               </div>
@@ -321,6 +322,10 @@
               <div class="chart-container" id="chart-financials"></div>
 
               <div class="chart-legend">
+                <div class="legend-item" data-metric="aum">
+                  <div class="legend-color" style="background: var(--graph-1)"></div>
+                  <span>Total AUM</span>
+                </div>
                 <div class="legend-item" data-metric="revenue">
                   <div class="legend-color" style="background: var(--graph-2)"></div>
                   <span>Net Revenue</span>
@@ -856,7 +861,7 @@
 
         const width = container.node().getBoundingClientRect().width;
         const height = 400;
-        const margin = { top: 40, right: 60, bottom: 70, left: 80 };
+        const margin = { top: 40, right: 100, bottom: 50, left: 100 };
 
         const svg = container.append('svg')
           .attr('width', width)
@@ -868,92 +873,69 @@
         const g = svg.append('g')
           .attr('transform', `translate(${margin.left},${margin.top})`);
 
-        // X axis: AUM values (positioned at bottom)
-        const x = d3.scaleLinear()
-          .domain([0, d3.max(projData, d => d.aum)])
-          .range([0, chartWidth]);
+        const x = d3.scaleLinear().domain([0, 10]).range([0, chartWidth]);
 
-        // Y axis: Revenue/EBITDA — extends into negative
-        const yMin = d3.min(projData, d => d.ebitda) * 1.5;
-        const yMax = d3.max(projData, d => d.netRevenue) * 1.15;
-        const y = d3.scaleLinear()
-          .domain([yMin, yMax])
+        const yAum = d3.scaleLinear()
+          .domain([0, d3.max(projData, d => d.aum) * 1.1])
           .range([chartHeight, 0]);
 
-        // Grid lines
+        const yRevenue = d3.scaleLinear()
+          .domain([d3.min(projData, d => d.ebitda) * 1.2, d3.max(projData, d => d.netRevenue) * 1.1])
+          .range([chartHeight, 0]);
+
+        // Grid
         g.append('g').attr('class', 'grid')
-          .call(d3.axisLeft(y).tickSize(-chartWidth).tickFormat('').ticks(8));
+          .call(d3.axisLeft(yAum).tickSize(-chartWidth).tickFormat('').ticks(5));
 
-        // Zero line (horizontal line at y=0)
-        const zeroY = y(0);
-        g.append('line')
-          .attr('x1', 0).attr('x2', chartWidth)
-          .attr('y1', zeroY).attr('y2', zeroY)
-          .attr('stroke', '#999').attr('stroke-width', 1.5)
-          .attr('stroke-dasharray', '6,3');
-
-        // X Axis (AUM at bottom) — filter ticks to avoid overlap
-        const aumTicks = projData.map(d => d.aum);
-        const minPxGap = 60;
-        const filteredTicks = aumTicks.reduce((acc, tick) => {
-          if (acc.length === 0 || x(tick) - x(acc[acc.length - 1]) >= minPxGap) {
-            acc.push(tick);
-          }
-          return acc;
-        }, []);
-        // Always include the last value
-        const lastAum = aumTicks[aumTicks.length - 1];
-        if (filteredTicks[filteredTicks.length - 1] !== lastAum) filteredTicks.push(lastAum);
-
+        // X Axis
         g.append('g').attr('class', 'axis')
           .attr('transform', `translate(0,${chartHeight})`)
-          .call(d3.axisBottom(x)
-            .tickValues(filteredTicks)
-            .tickFormat(d => formatAUM(d))
-          )
-          .selectAll('text')
-            .attr('transform', 'rotate(-35)')
-            .style('text-anchor', 'end')
-            .attr('dx', '-0.5em')
-            .attr('dy', '0.5em');
+          .call(d3.axisBottom(x).ticks(11).tickFormat(d => `Yr ${d}`));
 
-        // X Axis label
-        g.append('text')
-          .attr('x', chartWidth / 2).attr('y', chartHeight + 60)
-          .attr('fill', colors.axisLabel)
-          .attr('text-anchor', 'middle').attr('font-size', '12px')
-          .text('Total AUM');
-
-        // Y Axis (Revenue/EBITDA)
+        // Y Axis Left (AUM)
         g.append('g').attr('class', 'axis')
-          .call(d3.axisLeft(y).ticks(8).tickFormat(d => formatCurrencyK(d)));
+          .call(d3.axisLeft(yAum).ticks(5).tickFormat(d => formatAUM(d)));
 
         g.append('text')
           .attr('transform', 'rotate(-90)')
-          .attr('y', -65).attr('x', -chartHeight / 2)
+          .attr('y', -80).attr('x', -chartHeight / 2)
           .attr('fill', colors.axisLabel)
+          .attr('text-anchor', 'middle').attr('font-size', '12px')
+          .text('AUM');
+
+        // Y Axis Right (Revenue/EBITDA)
+        g.append('g').attr('class', 'axis')
+          .attr('transform', `translate(${chartWidth},0)`)
+          .call(d3.axisRight(yRevenue).ticks(5).tickFormat(d => formatCurrencyK(d)));
+
+        g.append('text')
+          .attr('transform', 'rotate(90)')
+          .attr('y', -chartWidth - 80).attr('x', chartHeight / 2)
+          .attr('fill', colors.axisLabelAlt)
           .attr('text-anchor', 'middle').attr('font-size', '12px')
           .text('Net Revenue / EBITDA ($K)');
 
-        // Line generators — x is now AUM
-        const lineRevenue = d3.line().x(d => x(d.aum)).y(d => y(d.netRevenue)).curve(d3.curveMonotoneX);
-        const lineEbitda = d3.line().x(d => x(d.aum)).y(d => y(d.ebitda)).curve(d3.curveMonotoneX);
+        // Line generators
+        const lineAum = d3.line().x(d => x(d.year)).y(d => yAum(d.aum)).curve(d3.curveMonotoneX);
+        const lineRevenue = d3.line().x(d => x(d.year)).y(d => yRevenue(d.netRevenue)).curve(d3.curveMonotoneX);
+        const lineEbitda = d3.line().x(d => x(d.year)).y(d => yRevenue(d.ebitda)).curve(d3.curveMonotoneX);
 
         // Draw lines
+        const pathAum = g.append('path').datum(projData).attr('class', 'line line-aum').attr('d', lineAum).attr('data-metric', 'aum');
         const pathRevenue = g.append('path').datum(projData).attr('class', 'line line-revenue').attr('d', lineRevenue).attr('data-metric', 'revenue');
         const pathEbitda = g.append('path').datum(projData).attr('class', 'line line-ebitda').attr('d', lineEbitda).attr('data-metric', 'ebitda');
 
         // Animate lines
-        [pathRevenue, pathEbitda].forEach(path => {
+        [pathAum, pathRevenue, pathEbitda].forEach(path => {
           const length = path.node().getTotalLength();
           path.attr('stroke-dasharray', length).attr('stroke-dashoffset', length)
             .transition().duration(1500).ease(d3.easeQuadOut).attr('stroke-dashoffset', 0);
         });
 
-        // Dots for Revenue
-        g.selectAll('.dot-revenue').data(projData).enter().append('circle')
-          .attr('class', 'dot').attr('cx', d => x(d.aum)).attr('cy', d => y(d.netRevenue))
-          .attr('r', 5).attr('fill', colors.revenue).attr('data-metric', 'revenue')
+        // Dots for AUM
+        g.selectAll('.dot-aum').data(projData).enter().append('circle')
+          .attr('class', 'dot').attr('cx', d => x(d.year)).attr('cy', d => yAum(d.aum))
+          .attr('r', 5).attr('fill', colors.aum).attr('data-metric', 'aum')
           .on('mouseover', function(event, d) {
             showChartTooltip(event, `
               <div class="tooltip-title">${d.yearLabel}</div>
@@ -965,14 +947,27 @@
           })
           .on('mouseout', hideChartTooltip);
 
+        // Dots for Revenue
+        g.selectAll('.dot-revenue').data(projData).enter().append('circle')
+          .attr('class', 'dot').attr('cx', d => x(d.year)).attr('cy', d => yRevenue(d.netRevenue))
+          .attr('r', 5).attr('fill', colors.revenue).attr('data-metric', 'revenue')
+          .on('mouseover', function(event, d) {
+            showChartTooltip(event, `
+              <div class="tooltip-title">${d.yearLabel}</div>
+              <div class="tooltip-row"><span class="tooltip-label">Net Revenue:</span><span class="tooltip-value">${formatCurrencyK(d.netRevenue)}</span></div>
+              <div class="tooltip-row"><span class="tooltip-label">Other Expenses:</span><span class="tooltip-value">${formatCurrencyK(d.otherExpenses)}</span></div>
+              <div class="tooltip-row"><span class="tooltip-label">EBITDA:</span><span class="tooltip-value">${formatCurrencyK(d.ebitda)}</span></div>
+            `);
+          })
+          .on('mouseout', hideChartTooltip);
+
         // Dots for EBITDA
         g.selectAll('.dot-ebitda').data(projData).enter().append('circle')
-          .attr('class', 'dot').attr('cx', d => x(d.aum)).attr('cy', d => y(d.ebitda))
+          .attr('class', 'dot').attr('cx', d => x(d.year)).attr('cy', d => yRevenue(d.ebitda))
           .attr('r', 5).attr('fill', colors.ebitda).attr('data-metric', 'ebitda')
           .on('mouseover', function(event, d) {
             showChartTooltip(event, `
               <div class="tooltip-title">${d.yearLabel}</div>
-              <div class="tooltip-row"><span class="tooltip-label">AUM:</span><span class="tooltip-value">${formatAUM(d.aum)}</span></div>
               <div class="tooltip-row"><span class="tooltip-label">EBITDA:</span><span class="tooltip-value">${formatCurrencyK(d.ebitda)}</span></div>
               <div class="tooltip-row"><span class="tooltip-label">Margin:</span><span class="tooltip-value">${d.margin}%</span></div>
             `);

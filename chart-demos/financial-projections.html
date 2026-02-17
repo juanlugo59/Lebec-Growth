@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Financial Projections Charts | LEBEC</title>
+  <title>Financial Projections — 3 Options | LEBEC</title>
   <meta name="robots" content="noindex, nofollow">
 
   <!-- Fonts -->
@@ -16,240 +16,222 @@
 
   <!-- D3.js -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    /* Version selector nav */
+    .version-nav {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    .version-nav a {
+      padding: 0.6rem 1.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .version-nav a:hover {
+      border-color: var(--mustard-yellow);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* Version sections */
+    .version-section {
+      margin-bottom: 5rem;
+      scroll-margin-top: 2rem;
+    }
+    .version-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .version-label {
+      display: inline-block;
+      background: var(--mustard-yellow);
+      color: var(--royal-blue);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.3rem 1rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+    .version-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .version-desc {
+      color: var(--lilac);
+      font-size: 0.9rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Chart cards for versions (no flip, just chart) */
+    .chart-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .chart-card h3 {
+      font-family: var(--font-title);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--royal-blue);
+      margin-bottom: 0.25rem;
+    }
+    .chart-card .chart-description {
+      color: var(--gray-600);
+      font-size: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Divider between versions */
+    .version-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin: 4rem auto;
+      max-width: 200px;
+    }
+
+    /* Zero line label */
+    .zero-label {
+      font-size: 10px;
+      fill: #999;
+      font-style: italic;
+    }
+  </style>
 </head>
 <body>
 
   <header class="page-header">
-    <h1>Financial Projections — Dev</h1>
-    <a href="../index.html" class="back-link">← Back to Investor Page</a>
+    <h1>Financial Projections — 3 Chart Options</h1>
+    <a href="../index.html" class="back-link">&larr; Back to Investor Page</a>
   </header>
 
   <main class="financials-section">
 
-    <h2 class="section-title">Path to Scale</h2>
+    <h2 class="section-title">Chart Options for Review</h2>
 
-    <!-- Highlight Cards -->
-    <div class="financials-grid">
-      <div class="financial-card">
-        <div class="financial-value">$740K</div>
-        <div class="financial-label">Annual revenue (Year 0)</div>
+    <nav class="version-nav">
+      <a href="#version-a">Version A &mdash; Linear AUM Axis</a>
+      <a href="#version-b">Version B &mdash; Sqrt AUM Axis</a>
+      <a href="#version-c">Version C &mdash; Year + AUM Labels</a>
+    </nav>
+
+    <!-- ============================================
+         VERSION A: Linear AUM on X axis (current home page)
+         ============================================ -->
+    <div class="version-section" id="version-a">
+      <div class="version-header">
+        <div class="version-label">Version A</div>
+        <h3 class="version-title">Linear AUM on X Axis</h3>
+        <p class="version-desc">AUM plotted linearly on the X axis. Early years cluster left (small AUM), later years spread out. Y axis extends into negative to show the EBITDA dip. This is what's currently on the home page.</p>
       </div>
-      <div class="financial-card">
-        <div class="financial-value">EBITDA+</div>
-        <div class="financial-label">Positive since inception</div>
-      </div>
-      <div class="financial-card">
-        <div class="financial-value">Year 3</div>
-        <div class="financial-label">Target break-even post-raise</div>
-      </div>
-      <div class="financial-card">
-        <div class="financial-value">$35M+</div>
-        <div class="financial-label">Projected EBITDA by Year 10</div>
+
+      <div class="chart-card">
+        <h3>LEBEC Financial Projections</h3>
+        <p class="chart-description">Net Revenue and EBITDA plotted against Total AUM growth.</p>
+
+        <div class="chart-controls" id="controls-a">
+          <button class="toggle-btn active" data-metric="revenue">Revenue</button>
+          <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
+        </div>
+
+        <div class="chart-container" id="chart-a"></div>
+
+        <div class="chart-legend">
+          <div class="legend-item" data-metric="revenue">
+            <div class="legend-color" style="background: var(--purple-58)"></div>
+            <span>Net Revenue</span>
+          </div>
+          <div class="legend-item" data-metric="ebitda">
+            <div class="legend-color" style="background: var(--purple-65)"></div>
+            <span>Operating Income / EBITDA</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Flip Card: Chart on front, Data on back -->
-    <div class="flip-card-container">
-      <div class="flip-card" id="flip-card-1">
+    <hr class="version-divider">
 
-        <!-- FRONT: Chart -->
-        <div class="flip-card-front">
-          <button class="flip-icon-btn" onclick="toggleFlip('flip-card-1')" title="View source data">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
-            </svg>
-          </button>
-          <span class="flip-hint">View data</span>
+    <!-- ============================================
+         VERSION B: Square-root AUM scale
+         ============================================ -->
+    <div class="version-section" id="version-b">
+      <div class="version-header">
+        <div class="version-label">Version B</div>
+        <h3 class="version-title">Square Root AUM Scale</h3>
+        <p class="version-desc">Uses a square root scale on the X axis so early AUM values are more spread out and readable, while still showing the full $4.6B range. Gives more visual weight to the early growth story and the EBITDA dip.</p>
+      </div>
 
-          <h2>LEBEC Financial Projections</h2>
-          <p class="chart-description">Interactive multi-line chart with hover tooltips showing all metrics per year. Toggle metrics on/off below.</p>
+      <div class="chart-card">
+        <h3>LEBEC Financial Projections</h3>
+        <p class="chart-description">Net Revenue and EBITDA plotted against Total AUM (square root scale).</p>
 
-          <div class="chart-controls" id="controls-1">
-            <button class="toggle-btn active" data-metric="aum">AUM</button>
-            <button class="toggle-btn active" data-metric="revenue">Revenue</button>
-            <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
-          </div>
-
-          <div class="chart-container" id="chart-1"></div>
-
-          <div class="chart-legend">
-            <div class="legend-item" data-metric="aum">
-              <div class="legend-color" style="background: var(--royal-blue)"></div>
-              <span>Total AUM</span>
-            </div>
-            <div class="legend-item" data-metric="revenue">
-              <div class="legend-color" style="background: var(--purple-58)"></div>
-              <span>Net Revenue</span>
-            </div>
-            <div class="legend-item" data-metric="ebitda">
-              <div class="legend-color" style="background: var(--purple-65)"></div>
-              <span>Operating Income / EBITDA</span>
-            </div>
-          </div>
+        <div class="chart-controls" id="controls-b">
+          <button class="toggle-btn active" data-metric="revenue">Revenue</button>
+          <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
         </div>
 
-        <!-- BACK: Source Data -->
-        <div class="flip-card-back">
-          <button class="flip-icon-btn" onclick="toggleFlip('flip-card-1')" title="View chart">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
-            </svg>
-          </button>
-          <span class="flip-hint">View chart</span>
+        <div class="chart-container" id="chart-b"></div>
 
-          <h2>LEBEC Financial Projections</h2>
-          <p class="chart-description">Financial projections data table with all metrics per year.</p>
-
-          <div class="data-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>Metric (000's)</th>
-                  <th>Year 0</th>
-                  <th>Year 1</th>
-                  <th>Year 2</th>
-                  <th>Year 3</th>
-                  <th>Year 4</th>
-                  <th>Year 5</th>
-                  <th>Year 6</th>
-                  <th>Year 7</th>
-                  <th>Year 8</th>
-                  <th>Year 9</th>
-                  <th>Year 10</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Total AUM</strong></td>
-                  <td>$—</td>
-                  <td>$50,700</td>
-                  <td>$100,910</td>
-                  <td>$201,183</td>
-                  <td>$401,538</td>
-                  <td>$681,999</td>
-                  <td>$1,090,599</td>
-                  <td>$1,689,779</td>
-                  <td>$2,533,992</td>
-                  <td>$3,547,150</td>
-                  <td>$4,611,295</td>
-                </tr>
-                <tr>
-                  <td><strong>Total Revenue</strong></td>
-                  <td>$740</td>
-                  <td>$1,950</td>
-                  <td>$3,410</td>
-                  <td>$6,183</td>
-                  <td>$11,538</td>
-                  <td>$18,999</td>
-                  <td>$29,799</td>
-                  <td>$45,539</td>
-                  <td>$67,632</td>
-                  <td>$94,246</td>
-                  <td>$122,520</td>
-                </tr>
-                <tr>
-                  <td><strong>Sub Advisory Expense</strong></td>
-                  <td>$—</td>
-                  <td>$1,000</td>
-                  <td>$1,750</td>
-                  <td>$3,500</td>
-                  <td>$6,600</td>
-                  <td>$11,220</td>
-                  <td>$17,408</td>
-                  <td>$26,982</td>
-                  <td>$40,474</td>
-                  <td>$56,663</td>
-                  <td>$69,058</td>
-                </tr>
-                <tr>
-                  <td><strong>Net Revenue</strong></td>
-                  <td>$740</td>
-                  <td>$950</td>
-                  <td>$1,660</td>
-                  <td>$2,683</td>
-                  <td>$4,938</td>
-                  <td>$7,779</td>
-                  <td>$12,391</td>
-                  <td>$18,556</td>
-                  <td>$27,159</td>
-                  <td>$37,583</td>
-                  <td>$53,462</td>
-                </tr>
-                <tr>
-                  <td><strong>Other Expenses</strong></td>
-                  <td>$723</td>
-                  <td>$1,577</td>
-                  <td>$1,837</td>
-                  <td>$2,655</td>
-                  <td>$3,895</td>
-                  <td>$4,951</td>
-                  <td>$6,772</td>
-                  <td>$9,306</td>
-                  <td>$11,856</td>
-                  <td>$14,915</td>
-                  <td>$18,786</td>
-                </tr>
-                <tr>
-                  <td><strong>Operating Income / EBITDA</strong></td>
-                  <td>$17</td>
-                  <td>$(627)</td>
-                  <td>$(177)</td>
-                  <td>$28</td>
-                  <td>$1,043</td>
-                  <td>$2,828</td>
-                  <td>$5,619</td>
-                  <td>$9,250</td>
-                  <td>$15,303</td>
-                  <td>$22,668</td>
-                  <td>$34,676</td>
-                </tr>
-                <tr>
-                  <td><strong>Operating Income %</strong></td>
-                  <td>2%</td>
-                  <td>-32%</td>
-                  <td>-5%</td>
-                  <td>0%</td>
-                  <td>9%</td>
-                  <td>15%</td>
-                  <td>19%</td>
-                  <td>20%</td>
-                  <td>23%</td>
-                  <td>24%</td>
-                  <td>28%</td>
-                </tr>
-                <tr>
-                  <td><strong>Income Tax Expense</strong></td>
-                  <td>—</td>
-                  <td>—</td>
-                  <td>—</td>
-                  <td>$7</td>
-                  <td>$261</td>
-                  <td>$707</td>
-                  <td>$1,405</td>
-                  <td>$2,312</td>
-                  <td>$3,826</td>
-                  <td>$5,667</td>
-                  <td>$8,669</td>
-                </tr>
-                <tr>
-                  <td><strong>Earnings after Taxes</strong></td>
-                  <td>—</td>
-                  <td>—</td>
-                  <td>—</td>
-                  <td>$21</td>
-                  <td>$782</td>
-                  <td>$2,121</td>
-                  <td>$4,214</td>
-                  <td>$6,937</td>
-                  <td>$11,477</td>
-                  <td>$17,001</td>
-                  <td>$26,007</td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="chart-legend">
+          <div class="legend-item" data-metric="revenue">
+            <div class="legend-color" style="background: var(--purple-58)"></div>
+            <span>Net Revenue</span>
+          </div>
+          <div class="legend-item" data-metric="ebitda">
+            <div class="legend-color" style="background: var(--purple-65)"></div>
+            <span>Operating Income / EBITDA</span>
           </div>
         </div>
+      </div>
+    </div>
 
+    <hr class="version-divider">
+
+    <!-- ============================================
+         VERSION C: Year on X axis + AUM labels below
+         ============================================ -->
+    <div class="version-section" id="version-c">
+      <div class="version-header">
+        <div class="version-label">Version C</div>
+        <h3 class="version-title">Year on X Axis + AUM Labels Below</h3>
+        <p class="version-desc">Keeps evenly-spaced Year 0&ndash;10 on the X axis with AUM values shown as secondary labels underneath. Best readability, both year and AUM visible at each point. Y axis extends into negative.</p>
+      </div>
+
+      <div class="chart-card">
+        <h3>LEBEC Financial Projections</h3>
+        <p class="chart-description">Net Revenue and EBITDA over time, with AUM milestones shown below each year.</p>
+
+        <div class="chart-controls" id="controls-c">
+          <button class="toggle-btn active" data-metric="revenue">Revenue</button>
+          <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
+        </div>
+
+        <div class="chart-container" id="chart-c"></div>
+
+        <div class="chart-legend">
+          <div class="legend-item" data-metric="revenue">
+            <div class="legend-color" style="background: var(--purple-58)"></div>
+            <span>Net Revenue</span>
+          </div>
+          <div class="legend-item" data-metric="ebitda">
+            <div class="legend-color" style="background: var(--purple-65)"></div>
+            <span>Operating Income / EBITDA</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -260,42 +242,29 @@
 
   <script>
     // ============================================
-    // FLIP CARD TOGGLE
-    // ============================================
-    function toggleFlip(cardId) {
-      const card = document.getElementById(cardId);
-      card.classList.toggle('flipped');
-    }
-
-    // ============================================
-    // DATA
+    // SHARED DATA & HELPERS
     // ============================================
     const data = [
-      { year: 0,  yearLabel: 'Year 0',  aum: 0,       totalRevenue: 740,    subAdvisory: 0,     netRevenue: 740,   otherExpenses: 723,   ebitda: 17,       margin: 2,   taxExpense: null, earningsAfterTax: null },
-      { year: 1,  yearLabel: 'Year 1',  aum: 50700,   totalRevenue: 1950,   subAdvisory: 1000,  netRevenue: 950,   otherExpenses: 1577,  ebitda: -626.90,  margin: -32, taxExpense: null, earningsAfterTax: null },
-      { year: 2,  yearLabel: 'Year 2',  aum: 100910,  totalRevenue: 3410,   subAdvisory: 1750,  netRevenue: 1660,  otherExpenses: 1837,  ebitda: -177.01,  margin: -5,  taxExpense: null, earningsAfterTax: null },
-      { year: 3,  yearLabel: 'Year 3',  aum: 201183,  totalRevenue: 6183,   subAdvisory: 3500,  netRevenue: 2683,  otherExpenses: 2655,  ebitda: 27.60,    margin: 0,   taxExpense: 7,    earningsAfterTax: 21 },
-      { year: 4,  yearLabel: 'Year 4',  aum: 401538,  totalRevenue: 11538,  subAdvisory: 6600,  netRevenue: 4938,  otherExpenses: 3895,  ebitda: 1043.05,  margin: 9,   taxExpense: 261,  earningsAfterTax: 782 },
-      { year: 5,  yearLabel: 'Year 5',  aum: 681999,  totalRevenue: 18999,  subAdvisory: 11220, netRevenue: 7779,  otherExpenses: 4951,  ebitda: 2828.47,  margin: 15,  taxExpense: 707,  earningsAfterTax: 2121 },
-      { year: 6,  yearLabel: 'Year 6',  aum: 1090599, totalRevenue: 29799,  subAdvisory: 17408, netRevenue: 12391, otherExpenses: 6772,  ebitda: 5618.58,  margin: 19,  taxExpense: 1405, earningsAfterTax: 4214 },
-      { year: 7,  yearLabel: 'Year 7',  aum: 1689779, totalRevenue: 45539,  subAdvisory: 26982, netRevenue: 18556, otherExpenses: 9306,  ebitda: 9249.97,  margin: 20,  taxExpense: 2312, earningsAfterTax: 6937 },
-      { year: 8,  yearLabel: 'Year 8',  aum: 2533992, totalRevenue: 67632,  subAdvisory: 40474, netRevenue: 27159, otherExpenses: 11856, ebitda: 15302.68, margin: 23,  taxExpense: 3826, earningsAfterTax: 11477 },
-      { year: 9,  yearLabel: 'Year 9',  aum: 3547150, totalRevenue: 94246,  subAdvisory: 56663, netRevenue: 37583, otherExpenses: 14915, ebitda: 22668.37, margin: 24,  taxExpense: 5667, earningsAfterTax: 17001 },
-      { year: 10, yearLabel: 'Year 10', aum: 4611295, totalRevenue: 122520, subAdvisory: 69058, netRevenue: 53462, otherExpenses: 18786, ebitda: 34675.66, margin: 28,  taxExpense: 8669, earningsAfterTax: 26007 }
+      { year: 0,  yearLabel: 'Yr 0',  aum: 0,       totalRevenue: 740,    subAdvisory: 0,     netRevenue: 740,   otherExpenses: 723,   ebitda: 17,       margin: 2,   taxExpense: null, earningsAfterTax: null },
+      { year: 1,  yearLabel: 'Yr 1',  aum: 50700,   totalRevenue: 1950,   subAdvisory: 1000,  netRevenue: 950,   otherExpenses: 1577,  ebitda: -626.90,  margin: -32, taxExpense: null, earningsAfterTax: null },
+      { year: 2,  yearLabel: 'Yr 2',  aum: 100910,  totalRevenue: 3410,   subAdvisory: 1750,  netRevenue: 1660,  otherExpenses: 1837,  ebitda: -177.01,  margin: -5,  taxExpense: null, earningsAfterTax: null },
+      { year: 3,  yearLabel: 'Yr 3',  aum: 201183,  totalRevenue: 6183,   subAdvisory: 3500,  netRevenue: 2683,  otherExpenses: 2655,  ebitda: 27.60,    margin: 0,   taxExpense: 7,    earningsAfterTax: 21 },
+      { year: 4,  yearLabel: 'Yr 4',  aum: 401538,  totalRevenue: 11538,  subAdvisory: 6600,  netRevenue: 4938,  otherExpenses: 3895,  ebitda: 1043.05,  margin: 9,   taxExpense: 261,  earningsAfterTax: 782 },
+      { year: 5,  yearLabel: 'Yr 5',  aum: 681999,  totalRevenue: 18999,  subAdvisory: 11220, netRevenue: 7779,  otherExpenses: 4951,  ebitda: 2828.47,  margin: 15,  taxExpense: 707,  earningsAfterTax: 2121 },
+      { year: 6,  yearLabel: 'Yr 6',  aum: 1090599, totalRevenue: 29799,  subAdvisory: 17408, netRevenue: 12391, otherExpenses: 6772,  ebitda: 5618.58,  margin: 19,  taxExpense: 1405, earningsAfterTax: 4214 },
+      { year: 7,  yearLabel: 'Yr 7',  aum: 1689779, totalRevenue: 45539,  subAdvisory: 26982, netRevenue: 18556, otherExpenses: 9306,  ebitda: 9249.97,  margin: 20,  taxExpense: 2312, earningsAfterTax: 6937 },
+      { year: 8,  yearLabel: 'Yr 8',  aum: 2533992, totalRevenue: 67632,  subAdvisory: 40474, netRevenue: 27159, otherExpenses: 11856, ebitda: 15302.68, margin: 23,  taxExpense: 3826, earningsAfterTax: 11477 },
+      { year: 9,  yearLabel: 'Yr 9',  aum: 3547150, totalRevenue: 94246,  subAdvisory: 56663, netRevenue: 37583, otherExpenses: 14915, ebitda: 22668.37, margin: 24,  taxExpense: 5667, earningsAfterTax: 17001 },
+      { year: 10, yearLabel: 'Yr 10', aum: 4611295, totalRevenue: 122520, subAdvisory: 69058, netRevenue: 53462, otherExpenses: 18786, ebitda: 34675.66, margin: 28,  taxExpense: 8669, earningsAfterTax: 26007 }
     ];
 
-    // Colors — Graph Accent Colors (Purple Gradient) per Style Guide
     const colors = {
-      aum: '#362983',        // royal blue — Primary data series
-      revenue: '#6a5acb',    // purple 58% — Secondary data series
-      ebitda: '#8577d4',     // purple 65% — Tertiary data series
-      lilac: '#E7E2E8',
-      axisLabel: '#4a4a4a',  // gray-600 for axis labels
-      axisLabelAlt: '#4a4a4a'
+      aum: '#362983',
+      revenue: '#6a5acb',
+      ebitda: '#8577d4',
+      axisLabel: '#4a4a4a'
     };
 
-    // Format helpers
-    const formatCurrency = d3.format('$,.0f');
     const formatCurrencyK = (d) => {
       const abs = Math.abs(d);
       const sign = d < 0 ? '-' : '';
@@ -305,247 +274,280 @@
     const formatAUM = (d) => {
       if (d >= 1000000) return `$${(d/1000000).toFixed(1)}B`;
       if (d >= 1000) return `$${(d/1000).toFixed(0)}M`;
+      if (d === 0) return '$0';
       return `$${d.toFixed(0)}K`;
     };
-    const formatPercent = d3.format('+.0%');
 
-    // Tooltip
     const tooltip = d3.select('#tooltip');
-
     function showTooltip(event, content) {
-      tooltip
-        .html(content)
-        .classed('active', true)
+      tooltip.html(content).classed('active', true)
         .style('left', (event.pageX + 15) + 'px')
         .style('top', (event.pageY - 10) + 'px');
     }
+    function hideTooltip() { tooltip.classed('active', false); }
 
-    function hideTooltip() {
-      tooltip.classed('active', false);
+    // Shared: build tooltip HTML for a data point
+    function tooltipHTML(d) {
+      return `
+        <div class="tooltip-title">${d.yearLabel} &mdash; AUM: ${formatAUM(d.aum)}</div>
+        <div class="tooltip-row"><span class="tooltip-label">Net Revenue:</span><span class="tooltip-value">${formatCurrencyK(d.netRevenue)}</span></div>
+        <div class="tooltip-row"><span class="tooltip-label">EBITDA:</span><span class="tooltip-value">${formatCurrencyK(d.ebitda)}</span></div>
+        <div class="tooltip-row"><span class="tooltip-label">Margin:</span><span class="tooltip-value">${d.margin}%</span></div>
+      `;
     }
 
-    // ============================================
-    // CHART 1: Multi-Line Chart
-    // ============================================
-    function createChart1() {
-      const container = d3.select('#chart-1');
-      const width = container.node().getBoundingClientRect().width;
-      const height = 400;
-      const margin = { top: 40, right: 100, bottom: 50, left: 100 };
+    // Shared: Y scale (Revenue/EBITDA extending into negative)
+    function makeYScale(chartHeight) {
+      const yMin = d3.min(data, d => d.ebitda) * 1.5;
+      const yMax = d3.max(data, d => d.netRevenue) * 1.15;
+      return d3.scaleLinear().domain([yMin, yMax]).range([chartHeight, 0]);
+    }
 
-      const svg = container.append('svg')
-        .attr('width', width)
-        .attr('height', height);
-
-      const chartWidth = width - margin.left - margin.right;
-      const chartHeight = height - margin.top - margin.bottom;
-
-      const g = svg.append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
-
-      // Scales
-      const x = d3.scaleLinear()
-        .domain([0, 10])
-        .range([0, chartWidth]);
-
-      // Dual Y-axis scales
-      const yAum = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.aum) * 1.1])
-        .range([chartHeight, 0]);
-
-      const yRevenue = d3.scaleLinear()
-        .domain([d3.min(data, d => d.ebitda) * 1.2, d3.max(data, d => d.netRevenue) * 1.1])
-        .range([chartHeight, 0]);
-
+    // Shared: draw gridlines, zero line, Y axis
+    function drawYAxis(g, y, chartWidth, chartHeight) {
       // Grid
-      g.append('g')
-        .attr('class', 'grid')
-        .call(d3.axisLeft(yAum)
-          .tickSize(-chartWidth)
-          .tickFormat('')
-          .ticks(5));
+      g.append('g').attr('class', 'grid')
+        .call(d3.axisLeft(y).tickSize(-chartWidth).tickFormat('').ticks(8));
 
-      // X Axis
-      g.append('g')
-        .attr('class', 'axis')
-        .attr('transform', `translate(0,${chartHeight})`)
-        .call(d3.axisBottom(x)
-          .ticks(11)
-          .tickFormat(d => `Yr ${d}`));
+      // Zero line
+      const zeroY = y(0);
+      g.append('line')
+        .attr('x1', 0).attr('x2', chartWidth)
+        .attr('y1', zeroY).attr('y2', zeroY)
+        .attr('stroke', '#999').attr('stroke-width', 1.5)
+        .attr('stroke-dasharray', '6,3');
 
-      // Y Axis Left (AUM)
-      g.append('g')
-        .attr('class', 'axis')
-        .call(d3.axisLeft(yAum)
-          .ticks(5)
-          .tickFormat(d => formatAUM(d)));
+      // "$0" label on zero line
+      g.append('text')
+        .attr('class', 'zero-label')
+        .attr('x', chartWidth + 5).attr('y', zeroY + 3)
+        .text('$0');
 
+      // Y Axis
+      g.append('g').attr('class', 'axis')
+        .call(d3.axisLeft(y).ticks(8).tickFormat(d => formatCurrencyK(d)));
+
+      // Y Axis label
       g.append('text')
         .attr('transform', 'rotate(-90)')
-        .attr('y', -80)
-        .attr('x', -chartHeight / 2)
+        .attr('y', -65).attr('x', -chartHeight / 2)
         .attr('fill', colors.axisLabel)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '12px')
-        .text('AUM');
-
-      // Y Axis Right (Revenue/EBITDA)
-      g.append('g')
-        .attr('class', 'axis')
-        .attr('transform', `translate(${chartWidth},0)`)
-        .call(d3.axisRight(yRevenue)
-          .ticks(5)
-          .tickFormat(d => formatCurrencyK(d)));
-
-      g.append('text')
-        .attr('transform', 'rotate(90)')
-        .attr('y', -chartWidth - 80)
-        .attr('x', chartHeight / 2)
-        .attr('fill', colors.axisLabelAlt)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '12px')
+        .attr('text-anchor', 'middle').attr('font-size', '12px')
         .text('Net Revenue / EBITDA ($K)');
+    }
 
-      // Line generators
-      const lineAum = d3.line()
-        .x(d => x(d.year))
-        .y(d => yAum(d.aum))
-        .curve(d3.curveMonotoneX);
+    // Shared: draw lines, dots, animate, toggle
+    function drawLinesAndDots(g, x, y, controlsId) {
+      const lineRevenue = d3.line().x(d => x(d)).y(d => y(d.netRevenue)).curve(d3.curveMonotoneX);
+      const lineEbitda = d3.line().x(d => x(d)).y(d => y(d.ebitda)).curve(d3.curveMonotoneX);
 
-      const lineRevenue = d3.line()
-        .x(d => x(d.year))
-        .y(d => yRevenue(d.netRevenue))
-        .curve(d3.curveMonotoneX);
+      const pathRevenue = g.append('path').datum(data).attr('class', 'line line-revenue').attr('d', lineRevenue).attr('data-metric', 'revenue');
+      const pathEbitda = g.append('path').datum(data).attr('class', 'line line-ebitda').attr('d', lineEbitda).attr('data-metric', 'ebitda');
 
-      const lineEbitda = d3.line()
-        .x(d => x(d.year))
-        .y(d => yRevenue(d.ebitda))
-        .curve(d3.curveMonotoneX);
-
-      // Draw lines
-      const pathAum = g.append('path')
-        .datum(data)
-        .attr('class', 'line line-aum')
-        .attr('d', lineAum)
-        .attr('data-metric', 'aum');
-
-      const pathRevenue = g.append('path')
-        .datum(data)
-        .attr('class', 'line line-revenue')
-        .attr('d', lineRevenue)
-        .attr('data-metric', 'revenue');
-
-      const pathEbitda = g.append('path')
-        .datum(data)
-        .attr('class', 'line line-ebitda')
-        .attr('d', lineEbitda)
-        .attr('data-metric', 'ebitda');
-
-      // Animate lines
-      [pathAum, pathRevenue, pathEbitda].forEach(path => {
+      [pathRevenue, pathEbitda].forEach(path => {
         const length = path.node().getTotalLength();
-        path
-          .attr('stroke-dasharray', length)
-          .attr('stroke-dashoffset', length)
-          .transition()
-          .duration(1500)
-          .ease(d3.easeQuadOut)
-          .attr('stroke-dashoffset', 0);
+        path.attr('stroke-dasharray', length).attr('stroke-dashoffset', length)
+          .transition().duration(1500).ease(d3.easeQuadOut).attr('stroke-dashoffset', 0);
       });
 
-      // Dots for AUM
-      g.selectAll('.dot-aum')
-        .data(data)
-        .enter()
-        .append('circle')
-        .attr('class', 'dot')
-        .attr('cx', d => x(d.year))
-        .attr('cy', d => yAum(d.aum))
-        .attr('r', 5)
-        .attr('fill', colors.aum)
-        .attr('data-metric', 'aum')
-        .on('mouseover', function(event, d) {
-          showTooltip(event, `
-            <div class="tooltip-title">${d.yearLabel}</div>
-            <div class="tooltip-row"><span class="tooltip-label">AUM:</span><span class="tooltip-value">${formatAUM(d.aum)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">Net Revenue:</span><span class="tooltip-value">${formatCurrencyK(d.netRevenue)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">EBITDA:</span><span class="tooltip-value">${formatCurrencyK(d.ebitda)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">Margin:</span><span class="tooltip-value">${d.margin}%</span></div>
-          `);
-        })
+      // Revenue dots
+      g.selectAll('.dot-revenue').data(data).enter().append('circle')
+        .attr('class', 'dot').attr('cx', d => x(d)).attr('cy', d => y(d.netRevenue))
+        .attr('r', 5).attr('fill', colors.revenue).attr('data-metric', 'revenue')
+        .on('mouseover', function(event, d) { showTooltip(event, tooltipHTML(d)); })
         .on('mouseout', hideTooltip);
 
-      // Dots for Revenue
-      g.selectAll('.dot-revenue')
-        .data(data)
-        .enter()
-        .append('circle')
-        .attr('class', 'dot')
-        .attr('cx', d => x(d.year))
-        .attr('cy', d => yRevenue(d.netRevenue))
-        .attr('r', 5)
-        .attr('fill', colors.revenue)
-        .attr('data-metric', 'revenue')
-        .on('mouseover', function(event, d) {
-          showTooltip(event, `
-            <div class="tooltip-title">${d.yearLabel}</div>
-            <div class="tooltip-row"><span class="tooltip-label">Net Revenue:</span><span class="tooltip-value">${formatCurrencyK(d.netRevenue)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">Other Expenses:</span><span class="tooltip-value">${formatCurrencyK(d.otherExpenses)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">EBITDA:</span><span class="tooltip-value">${formatCurrencyK(d.ebitda)}</span></div>
-          `);
-        })
+      // EBITDA dots
+      g.selectAll('.dot-ebitda').data(data).enter().append('circle')
+        .attr('class', 'dot').attr('cx', d => x(d)).attr('cy', d => y(d.ebitda))
+        .attr('r', 5).attr('fill', colors.ebitda).attr('data-metric', 'ebitda')
+        .on('mouseover', function(event, d) { showTooltip(event, tooltipHTML(d)); })
         .on('mouseout', hideTooltip);
 
-      // Dots for EBITDA
-      g.selectAll('.dot-ebitda')
-        .data(data)
-        .enter()
-        .append('circle')
-        .attr('class', 'dot')
-        .attr('cx', d => x(d.year))
-        .attr('cy', d => yRevenue(d.ebitda))
-        .attr('r', 5)
-        .attr('fill', colors.ebitda)
-        .attr('data-metric', 'ebitda')
-        .on('mouseover', function(event, d) {
-          showTooltip(event, `
-            <div class="tooltip-title">${d.yearLabel}</div>
-            <div class="tooltip-row"><span class="tooltip-label">EBITDA:</span><span class="tooltip-value">${formatCurrencyK(d.ebitda)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">Margin:</span><span class="tooltip-value">${d.margin}%</span></div>
-          `);
-        })
-        .on('mouseout', hideTooltip);
-
-      // Toggle controls
-      d3.selectAll('#controls-1 .toggle-btn').on('click', function() {
+      // Toggle
+      d3.selectAll(`#${controlsId} .toggle-btn`).on('click', function() {
         const btn = d3.select(this);
         const metric = btn.attr('data-metric');
         const isActive = btn.classed('active');
-
         btn.classed('active', !isActive);
-
-        // Toggle visibility
         g.selectAll(`[data-metric="${metric}"]`)
-          .transition()
-          .duration(300)
-          .style('opacity', isActive ? 0 : 1);
+          .transition().duration(300).style('opacity', isActive ? 0 : 1);
       });
     }
+
+
+    // ============================================
+    // VERSION A: Linear AUM on X axis
+    // ============================================
+    function createChartA() {
+      const container = d3.select('#chart-a');
+      container.selectAll('*').remove();
+      const width = container.node().getBoundingClientRect().width;
+      const height = 420;
+      const margin = { top: 30, right: 50, bottom: 75, left: 80 };
+
+      const svg = container.append('svg').attr('width', width).attr('height', height);
+      const cw = width - margin.left - margin.right;
+      const ch = height - margin.top - margin.bottom;
+      const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+      // X: linear AUM
+      const xScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.aum)])
+        .range([0, cw]);
+
+      const y = makeYScale(ch);
+      drawYAxis(g, y, cw, ch);
+
+      // X axis with filtered ticks
+      const aumTicks = data.map(d => d.aum);
+      const minPx = 65;
+      const filtered = aumTicks.reduce((acc, t) => {
+        if (acc.length === 0 || xScale(t) - xScale(acc[acc.length - 1]) >= minPx) acc.push(t);
+        return acc;
+      }, []);
+      const last = aumTicks[aumTicks.length - 1];
+      if (filtered[filtered.length - 1] !== last) filtered.push(last);
+
+      g.append('g').attr('class', 'axis')
+        .attr('transform', `translate(0,${ch})`)
+        .call(d3.axisBottom(xScale).tickValues(filtered).tickFormat(d => formatAUM(d)))
+        .selectAll('text')
+          .attr('transform', 'rotate(-35)')
+          .style('text-anchor', 'end')
+          .attr('dx', '-0.5em').attr('dy', '0.5em');
+
+      g.append('text')
+        .attr('x', cw / 2).attr('y', ch + 65)
+        .attr('fill', colors.axisLabel)
+        .attr('text-anchor', 'middle').attr('font-size', '12px')
+        .text('Total AUM');
+
+      // Lines & dots
+      drawLinesAndDots(g, d => xScale(d.aum), y, 'controls-a');
+    }
+
+
+    // ============================================
+    // VERSION B: Square root AUM scale
+    // ============================================
+    function createChartB() {
+      const container = d3.select('#chart-b');
+      container.selectAll('*').remove();
+      const width = container.node().getBoundingClientRect().width;
+      const height = 420;
+      const margin = { top: 30, right: 50, bottom: 75, left: 80 };
+
+      const svg = container.append('svg').attr('width', width).attr('height', height);
+      const cw = width - margin.left - margin.right;
+      const ch = height - margin.top - margin.bottom;
+      const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+      // X: sqrt AUM — spreads out the early values
+      const xScale = d3.scalePow().exponent(0.5)
+        .domain([0, d3.max(data, d => d.aum)])
+        .range([0, cw]);
+
+      const y = makeYScale(ch);
+      drawYAxis(g, y, cw, ch);
+
+      // X axis — all ticks fit because sqrt spreads them
+      const aumTicks = data.map(d => d.aum);
+      const minPx = 50;
+      const filtered = aumTicks.reduce((acc, t) => {
+        if (acc.length === 0 || xScale(t) - xScale(acc[acc.length - 1]) >= minPx) acc.push(t);
+        return acc;
+      }, []);
+      const last = aumTicks[aumTicks.length - 1];
+      if (filtered[filtered.length - 1] !== last) filtered.push(last);
+
+      g.append('g').attr('class', 'axis')
+        .attr('transform', `translate(0,${ch})`)
+        .call(d3.axisBottom(xScale).tickValues(filtered).tickFormat(d => formatAUM(d)))
+        .selectAll('text')
+          .attr('transform', 'rotate(-35)')
+          .style('text-anchor', 'end')
+          .attr('dx', '-0.5em').attr('dy', '0.5em');
+
+      g.append('text')
+        .attr('x', cw / 2).attr('y', ch + 65)
+        .attr('fill', colors.axisLabel)
+        .attr('text-anchor', 'middle').attr('font-size', '12px')
+        .text('Total AUM');
+
+      drawLinesAndDots(g, d => xScale(d.aum), y, 'controls-b');
+    }
+
+
+    // ============================================
+    // VERSION C: Year on X axis + AUM labels below
+    // ============================================
+    function createChartC() {
+      const container = d3.select('#chart-c');
+      container.selectAll('*').remove();
+      const width = container.node().getBoundingClientRect().width;
+      const height = 440;
+      const margin = { top: 30, right: 50, bottom: 90, left: 80 };
+
+      const svg = container.append('svg').attr('width', width).attr('height', height);
+      const cw = width - margin.left - margin.right;
+      const ch = height - margin.top - margin.bottom;
+      const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+      // X: evenly spaced years
+      const xScale = d3.scaleLinear().domain([0, 10]).range([0, cw]);
+
+      const y = makeYScale(ch);
+      drawYAxis(g, y, cw, ch);
+
+      // Primary X axis: Year labels
+      g.append('g').attr('class', 'axis')
+        .attr('transform', `translate(0,${ch})`)
+        .call(d3.axisBottom(xScale).ticks(11).tickFormat(d => `Yr ${d}`));
+
+      // Secondary X labels: AUM values below each year tick
+      g.selectAll('.aum-label')
+        .data(data)
+        .enter()
+        .append('text')
+        .attr('class', 'aum-label')
+        .attr('x', d => xScale(d.year))
+        .attr('y', ch + 38)
+        .attr('text-anchor', 'middle')
+        .attr('fill', colors.revenue)
+        .attr('font-size', '10px')
+        .attr('font-weight', '500')
+        .text(d => formatAUM(d.aum));
+
+      // "AUM" label for the secondary row
+      g.append('text')
+        .attr('x', -10).attr('y', ch + 38)
+        .attr('text-anchor', 'end')
+        .attr('fill', colors.revenue)
+        .attr('font-size', '10px')
+        .attr('font-weight', '600')
+        .text('AUM →');
+
+      drawLinesAndDots(g, d => xScale(d.year), y, 'controls-c');
+    }
+
 
     // ============================================
     // INITIALIZE
     // ============================================
     document.addEventListener('DOMContentLoaded', () => {
-      createChart1();
+      createChartA();
+      createChartB();
+      createChartC();
     });
 
-    // Resize handler
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        d3.select('#chart-1').selectAll('*').remove();
-        createChart1();
+        createChartA();
+        createChartB();
+        createChartC();
       }, 250);
     });
   </script>
