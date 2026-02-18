@@ -31,21 +31,17 @@
   <!-- Noise Texture -->
   <div class="noise"></div>
 
-  <!-- Password Gate (disabled during development) -->
-  <!--
+  <!-- Password Gate -->
   <div id="gate" class="gate">
     <div class="gate-inner">
-      <div class="gate-logo">LEBEC</div>
-      <div class="gate-line"></div>
-      <p class="gate-subtitle">Investor Materials</p>
+      <img src="images/lebec-white logo-high res.png" alt="LEBEC" class="gate-logo-img">
       <form id="gate-form" class="gate-form">
-        <input type="password" id="gate-input" class="gate-input" placeholder="Access Code" autocomplete="off">
+        <input type="password" id="gate-input" class="gate-input" placeholder="Password" autocomplete="off">
         <button type="submit" class="gate-btn">Enter</button>
       </form>
       <p id="gate-error" class="gate-error"></p>
     </div>
   </div>
-  -->
 
   <!-- Main Content -->
   <main id="main">
@@ -548,26 +544,15 @@
       </div>
     </section>
 
-    <!-- Footer (temporarily removed)
-    <footer class="footer">
+    <footer class="disclaimer-footer">
       <div class="container">
-        <div class="footer-content">
-          <div>
-            <div class="footer-logo">LEBEC</div>
-            <p class="footer-tagline">Mainstreaming innovative finance.</p>
-          </div>
-          <div class="footer-links">
-            <a href="https://lebec.co" target="_blank">Website</a>
-            <a href="https://linkedin.com/company/lebec" target="_blank">LinkedIn</a>
-            <a href="mailto:alix@lebec.co">Contact</a>
-          </div>
-        </div>
-        <div class="footer-legal">
-          <p>&copy; 2026 LEBEC. All rights reserved. This material is confidential and intended solely for the recipient.</p>
-        </div>
+        <h4 class="disclaimer-title">Disclaimer</h4>
+        <p>This presentation (the "Presentation") contains proprietary and confidential information and is intended solely for the use of the addressee.</p>
+        <p>While LEBEC has endeavored to include information it believes to be reliable and relevant, no representation or warranty, express or implied, is made as to the accuracy or completeness of such information contained in this Presentation. LEBEC, including its respective officers, directors, partners, principals, employees, agents, representatives or affiliates (collectively, the "Representatives"), expressly disclaim any and all liability which may be based on such information, including any errors therein or omissions therefrom. Nothing contained in this Presentation is or should be relied upon as a promise or representation as to the future. Any representations or warranties with respect to LEBEC will be reflected in a written definitive agreement and the closing documents. The recipient acknowledges that the Representatives will not be subject to any liability based on the information contained in this Presentation, errors or omissions therein, whether or not the Representatives knew or should have known of any such errors or omissions from this Presentation.</p>
+        <p>This Presentation is not intended as an offer or solicitation for the purchase or sale of any financial instrument, or security, or as an official confirmation of any transaction. If you are not the intended recipient, you are strictly prohibited from disclosing, copying, distributing or using any of this information. If you received this communication in error, please contact the sender immediately and destroy the material in its entirety, whether electronic or hard copy. To the extent any investment return or other historical return information is included in this email, please note that past performance is not indicative of future results.</p>
+        <div class="disclaimer-copyright">&copy; 2026 LEBEC. All rights reserved.</div>
       </div>
     </footer>
-    -->
 
   </main>
 
@@ -594,11 +579,51 @@
   </div>
 
   <script>
-    // Password gate disabled during development
-    // To re-enable: uncomment the gate HTML above and restore the password JS
+    // ─── Password Gate ───
+    (function() {
+      var gate = document.getElementById('gate');
+      var main = document.getElementById('main');
+      var form = document.getElementById('gate-form');
+      var input = document.getElementById('gate-input');
+      var error = document.getElementById('gate-error');
+      var CODE = 'lebecinvest';
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', initPage);
+      // Check if already authenticated this session
+      if (sessionStorage.getItem('lebec-auth') === '1') {
+        gate.style.display = 'none';
+        main.style.display = 'block';
+        document.addEventListener('DOMContentLoaded', initPage);
+        return;
+      }
+
+      // Hide main content until authenticated
+      main.style.display = 'none';
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value === CODE) {
+          sessionStorage.setItem('lebec-auth', '1');
+          gate.style.opacity = '0';
+          gate.style.transition = 'opacity 0.6s ease';
+          setTimeout(function() {
+            gate.style.display = 'none';
+            main.style.display = 'block';
+            initPage();
+          }, 600);
+        } else {
+          error.textContent = 'Invalid access code';
+          input.value = '';
+          input.focus();
+        }
+      });
+
+      input.focus();
+    })();
+
+    // Initialize on page load (called after gate or if already authenticated)
+    if (sessionStorage.getItem('lebec-auth') === '1') {
+      document.addEventListener('DOMContentLoaded', initPage);
+    }
 
     function initPage() {
       gsap.registerPlugin(ScrollTrigger);
