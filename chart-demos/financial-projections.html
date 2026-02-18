@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Financial Projections — 3 Options | LEBEC</title>
+  <title>Financial Projections — Version C | LEBEC</title>
   <meta name="robots" content="noindex, nofollow">
 
   <!-- Fonts -->
@@ -18,29 +18,6 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
   <style>
-    /* Version selector nav */
-    .version-nav {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin-bottom: 3rem;
-      flex-wrap: wrap;
-    }
-    .version-nav a {
-      padding: 0.6rem 1.5rem;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: 8px;
-      color: var(--white);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    .version-nav a:hover {
-      border-color: var(--mustard-yellow);
-      background: rgba(255,255,255,0.05);
-    }
-
     /* Version sections */
     .version-section {
       margin-bottom: 5rem;
@@ -76,7 +53,30 @@
       line-height: 1.5;
     }
 
-    /* Chart cards for versions (no flip, just chart) */
+    /* Version nav */
+    .version-nav {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    .version-nav a {
+      padding: 0.6rem 1.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .version-nav a:hover {
+      border-color: var(--mustard-yellow);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* Chart cards */
     .chart-card {
       background: var(--white);
       border-radius: 16px;
@@ -110,12 +110,29 @@
       fill: #999;
       font-style: italic;
     }
+
+    /* Operating Margin row highlight */
+    .data-table tr.margin-row td {
+      font-weight: 600;
+      color: var(--royal-blue);
+      background: rgba(54, 41, 131, 0.04);
+      border-top: 2px solid var(--royal-blue);
+      border-bottom: 2px solid var(--royal-blue);
+    }
+    .data-table tr.margin-row:hover td {
+      background: rgba(54, 41, 131, 0.08);
+    }
+
+    /* Negative values in red */
+    .data-table td.negative {
+      color: #c0392b;
+    }
   </style>
 </head>
 <body>
 
   <header class="page-header">
-    <h1>Financial Projections — 3 Chart Options</h1>
+    <h1>Financial Projections — Version C</h1>
     <a href="../index.html" class="back-link">&larr; Back to Investor Page</a>
   </header>
 
@@ -124,103 +141,30 @@
     <h2 class="section-title">Chart Options for Review</h2>
 
     <nav class="version-nav">
-      <a href="#version-a">Version A &mdash; Linear AUM Axis</a>
-      <a href="#version-b">Version B &mdash; Sqrt AUM Axis</a>
-      <a href="#version-c">Version C &mdash; Year + AUM Labels</a>
+      <a href="#version-c1">C1 — Original</a>
+      <a href="#version-c2">C2 — With Operating Margin Table</a>
     </nav>
 
     <!-- ============================================
-         VERSION A: Linear AUM on X axis (current home page)
+         VERSION C1: Original (Year + AUM labels)
          ============================================ -->
-    <div class="version-section" id="version-a">
+    <div class="version-section" id="version-c1">
       <div class="version-header">
-        <div class="version-label">Version A</div>
-        <h3 class="version-title">Linear AUM on X Axis</h3>
-        <p class="version-desc">AUM plotted linearly on the X axis. Early years cluster left (small AUM), later years spread out. Y axis extends into negative to show the EBITDA dip. This is what's currently on the home page.</p>
-      </div>
-
-      <div class="chart-card">
-        <h3>LEBEC Financial Projections</h3>
-        <p class="chart-description">Net Revenue and EBITDA plotted against Total AUM growth.</p>
-
-        <div class="chart-controls" id="controls-a">
-          <button class="toggle-btn active" data-metric="revenue">Revenue</button>
-          <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
-        </div>
-
-        <div class="chart-container" id="chart-a"></div>
-
-        <div class="chart-legend">
-          <div class="legend-item" data-metric="revenue">
-            <div class="legend-color" style="background: var(--purple-58)"></div>
-            <span>Net Revenue</span>
-          </div>
-          <div class="legend-item" data-metric="ebitda">
-            <div class="legend-color" style="background: var(--purple-65)"></div>
-            <span>Operating Income / EBITDA</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <hr class="version-divider">
-
-    <!-- ============================================
-         VERSION B: Square-root AUM scale
-         ============================================ -->
-    <div class="version-section" id="version-b">
-      <div class="version-header">
-        <div class="version-label">Version B</div>
-        <h3 class="version-title">Square Root AUM Scale</h3>
-        <p class="version-desc">Uses a square root scale on the X axis so early AUM values are more spread out and readable, while still showing the full $4.6B range. Gives more visual weight to the early growth story and the EBITDA dip.</p>
-      </div>
-
-      <div class="chart-card">
-        <h3>LEBEC Financial Projections</h3>
-        <p class="chart-description">Net Revenue and EBITDA plotted against Total AUM (square root scale).</p>
-
-        <div class="chart-controls" id="controls-b">
-          <button class="toggle-btn active" data-metric="revenue">Revenue</button>
-          <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
-        </div>
-
-        <div class="chart-container" id="chart-b"></div>
-
-        <div class="chart-legend">
-          <div class="legend-item" data-metric="revenue">
-            <div class="legend-color" style="background: var(--purple-58)"></div>
-            <span>Net Revenue</span>
-          </div>
-          <div class="legend-item" data-metric="ebitda">
-            <div class="legend-color" style="background: var(--purple-65)"></div>
-            <span>Operating Income / EBITDA</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <hr class="version-divider">
-
-    <!-- ============================================
-         VERSION C: Year on X axis + AUM labels below
-         ============================================ -->
-    <div class="version-section" id="version-c">
-      <div class="version-header">
-        <div class="version-label">Version C</div>
+        <div class="version-label">Version C1</div>
         <h3 class="version-title">Year on X Axis + AUM Labels Below</h3>
-        <p class="version-desc">Keeps evenly-spaced Year 0&ndash;10 on the X axis with AUM values shown as secondary labels underneath. Best readability, both year and AUM visible at each point. Y axis extends into negative.</p>
+        <p class="version-desc">Evenly-spaced Year 0&ndash;10 on the X axis with AUM values shown as secondary labels underneath. Chart only&mdash;no data table.</p>
       </div>
 
       <div class="chart-card">
         <h3>LEBEC Financial Projections</h3>
         <p class="chart-description">Net Revenue and EBITDA over time, with AUM milestones shown below each year.</p>
 
-        <div class="chart-controls" id="controls-c">
+        <div class="chart-controls" id="controls-c1">
           <button class="toggle-btn active" data-metric="revenue">Revenue</button>
           <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
         </div>
 
-        <div class="chart-container" id="chart-c"></div>
+        <div class="chart-container" id="chart-c1"></div>
 
         <div class="chart-legend">
           <div class="legend-item" data-metric="revenue">
@@ -232,6 +176,45 @@
             <span>Operating Income / EBITDA</span>
           </div>
         </div>
+      </div>
+    </div>
+
+    <hr class="version-divider">
+
+    <!-- ============================================
+         VERSION C2: Chart + Data Table with Operating Margin
+         ============================================ -->
+    <div class="version-section" id="version-c2">
+      <div class="version-header">
+        <div class="version-label">Version C2</div>
+        <h3 class="version-title">With Operating Margin in Data Table</h3>
+        <p class="version-desc">Same chart as C1, plus a full data table below that surfaces the Operating Margin&mdash;a calculated metric already in the tooltip but now visible for analysis.</p>
+      </div>
+
+      <div class="chart-card">
+        <h3>LEBEC Financial Projections</h3>
+        <p class="chart-description">Net Revenue and EBITDA over time, with AUM milestones shown below each year.</p>
+
+        <div class="chart-controls" id="controls-c2">
+          <button class="toggle-btn active" data-metric="revenue">Revenue</button>
+          <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
+        </div>
+
+        <div class="chart-container" id="chart-c2"></div>
+
+        <div class="chart-legend">
+          <div class="legend-item" data-metric="revenue">
+            <div class="legend-color" style="background: var(--purple-58)"></div>
+            <span>Net Revenue</span>
+          </div>
+          <div class="legend-item" data-metric="ebitda">
+            <div class="legend-color" style="background: var(--purple-65)"></div>
+            <span>Operating Income / EBITDA</span>
+          </div>
+        </div>
+
+        <!-- Data Table with Operating Margin -->
+        <div class="data-table" id="data-table-c2"></div>
       </div>
     </div>
 
@@ -375,115 +358,9 @@
       });
     }
 
-
-    // ============================================
-    // VERSION A: Linear AUM on X axis
-    // ============================================
-    function createChartA() {
-      const container = d3.select('#chart-a');
-      container.selectAll('*').remove();
-      const width = container.node().getBoundingClientRect().width;
-      const height = 420;
-      const margin = { top: 30, right: 50, bottom: 75, left: 80 };
-
-      const svg = container.append('svg').attr('width', width).attr('height', height);
-      const cw = width - margin.left - margin.right;
-      const ch = height - margin.top - margin.bottom;
-      const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
-      // X: linear AUM
-      const xScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.aum)])
-        .range([0, cw]);
-
-      const y = makeYScale(ch);
-      drawYAxis(g, y, cw, ch);
-
-      // X axis with filtered ticks
-      const aumTicks = data.map(d => d.aum);
-      const minPx = 65;
-      const filtered = aumTicks.reduce((acc, t) => {
-        if (acc.length === 0 || xScale(t) - xScale(acc[acc.length - 1]) >= minPx) acc.push(t);
-        return acc;
-      }, []);
-      const last = aumTicks[aumTicks.length - 1];
-      if (filtered[filtered.length - 1] !== last) filtered.push(last);
-
-      g.append('g').attr('class', 'axis')
-        .attr('transform', `translate(0,${ch})`)
-        .call(d3.axisBottom(xScale).tickValues(filtered).tickFormat(d => formatAUM(d)))
-        .selectAll('text')
-          .attr('transform', 'rotate(-35)')
-          .style('text-anchor', 'end')
-          .attr('dx', '-0.5em').attr('dy', '0.5em');
-
-      g.append('text')
-        .attr('x', cw / 2).attr('y', ch + 65)
-        .attr('fill', colors.axisLabel)
-        .attr('text-anchor', 'middle').attr('font-size', '12px')
-        .text('Total AUM');
-
-      // Lines & dots
-      drawLinesAndDots(g, d => xScale(d.aum), y, 'controls-a');
-    }
-
-
-    // ============================================
-    // VERSION B: Square root AUM scale
-    // ============================================
-    function createChartB() {
-      const container = d3.select('#chart-b');
-      container.selectAll('*').remove();
-      const width = container.node().getBoundingClientRect().width;
-      const height = 420;
-      const margin = { top: 30, right: 50, bottom: 75, left: 80 };
-
-      const svg = container.append('svg').attr('width', width).attr('height', height);
-      const cw = width - margin.left - margin.right;
-      const ch = height - margin.top - margin.bottom;
-      const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
-      // X: sqrt AUM — spreads out the early values
-      const xScale = d3.scalePow().exponent(0.5)
-        .domain([0, d3.max(data, d => d.aum)])
-        .range([0, cw]);
-
-      const y = makeYScale(ch);
-      drawYAxis(g, y, cw, ch);
-
-      // X axis — all ticks fit because sqrt spreads them
-      const aumTicks = data.map(d => d.aum);
-      const minPx = 50;
-      const filtered = aumTicks.reduce((acc, t) => {
-        if (acc.length === 0 || xScale(t) - xScale(acc[acc.length - 1]) >= minPx) acc.push(t);
-        return acc;
-      }, []);
-      const last = aumTicks[aumTicks.length - 1];
-      if (filtered[filtered.length - 1] !== last) filtered.push(last);
-
-      g.append('g').attr('class', 'axis')
-        .attr('transform', `translate(0,${ch})`)
-        .call(d3.axisBottom(xScale).tickValues(filtered).tickFormat(d => formatAUM(d)))
-        .selectAll('text')
-          .attr('transform', 'rotate(-35)')
-          .style('text-anchor', 'end')
-          .attr('dx', '-0.5em').attr('dy', '0.5em');
-
-      g.append('text')
-        .attr('x', cw / 2).attr('y', ch + 65)
-        .attr('fill', colors.axisLabel)
-        .attr('text-anchor', 'middle').attr('font-size', '12px')
-        .text('Total AUM');
-
-      drawLinesAndDots(g, d => xScale(d.aum), y, 'controls-b');
-    }
-
-
-    // ============================================
-    // VERSION C: Year on X axis + AUM labels below
-    // ============================================
-    function createChartC() {
-      const container = d3.select('#chart-c');
+    // Shared: create Version C chart (Year on X axis + AUM labels)
+    function createChartC(containerId, controlsId) {
+      const container = d3.select(containerId);
       container.selectAll('*').remove();
       const width = container.node().getBoundingClientRect().width;
       const height = 440;
@@ -528,7 +405,51 @@
         .attr('font-weight', '600')
         .text('AUM →');
 
-      drawLinesAndDots(g, d => xScale(d.year), y, 'controls-c');
+      drawLinesAndDots(g, d => xScale(d.year), y, controlsId);
+    }
+
+    // Build the data table with Operating Margin for C2
+    function buildDataTable() {
+      const tableContainer = d3.select('#data-table-c2');
+      tableContainer.selectAll('*').remove();
+
+      const rows = [
+        { label: 'Total AUM',         key: 'aum',              format: formatAUM },
+        { label: 'Total Revenue',      key: 'totalRevenue',     format: formatCurrencyK },
+        { label: 'Sub-Advisory Fees',  key: 'subAdvisory',      format: formatCurrencyK },
+        { label: 'Net Revenue',        key: 'netRevenue',       format: formatCurrencyK },
+        { label: 'Other Expenses',     key: 'otherExpenses',    format: formatCurrencyK },
+        { label: 'EBITDA',             key: 'ebitda',           format: formatCurrencyK },
+        { label: 'Operating Margin',   key: 'margin',           format: d => `${d}%`, isMargin: true },
+        { label: 'Tax Expense',        key: 'taxExpense',       format: formatCurrencyK },
+        { label: 'Earnings After Tax', key: 'earningsAfterTax', format: formatCurrencyK }
+      ];
+
+      const table = tableContainer.append('table');
+
+      // Header
+      const thead = table.append('thead').append('tr');
+      thead.append('th').text('Metric');
+      data.forEach(d => thead.append('th').text(d.yearLabel));
+
+      // Body
+      const tbody = table.append('tbody');
+      rows.forEach(row => {
+        const tr = tbody.append('tr');
+        if (row.isMargin) tr.classed('margin-row', true);
+
+        tr.append('td').text(row.label);
+        data.forEach(d => {
+          const val = d[row.key];
+          const td = tr.append('td');
+          if (val === null || val === undefined) {
+            td.text('—');
+          } else {
+            td.text(row.format(val));
+            if (typeof val === 'number' && val < 0) td.classed('negative', true);
+          }
+        });
+      });
     }
 
 
@@ -536,18 +457,18 @@
     // INITIALIZE
     // ============================================
     document.addEventListener('DOMContentLoaded', () => {
-      createChartA();
-      createChartB();
-      createChartC();
+      createChartC('#chart-c1', 'controls-c1');
+      createChartC('#chart-c2', 'controls-c2');
+      buildDataTable();
     });
 
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        createChartA();
-        createChartB();
-        createChartC();
+        createChartC('#chart-c1', 'controls-c1');
+        createChartC('#chart-c2', 'controls-c2');
+        buildDataTable();
       }, 250);
     });
   </script>
