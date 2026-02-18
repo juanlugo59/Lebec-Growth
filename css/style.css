@@ -1883,6 +1883,7 @@ body {
   perspective: 2000px;
   position: relative;
   z-index: 1;
+  margin-bottom: 3rem;
 }
 
 .flip-card {
