@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEBEC Globe Variations</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #fff;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #362983;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      width: 100vw;
+      min-height: 200vh;
+    }
+    .cell {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid #E7E2E8;
+    }
+    .cell canvas { display: block; }
+    .label {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.85);
+      padding: 6px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      z-index: 10;
+    }
+    h1 {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 20px 10px;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+    h1 span { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="grid">
+  <h1><span>LEBEC</span> Globe Explorations</h1>
+  <div class="cell" id="g1"><div class="label">V1 — Bold Wireframe</div></div>
+  <div class="cell" id="g2"><div class="label">V2 — Dotted Continents</div></div>
+  <div class="cell" id="g3"><div class="label">V3 — Flowing Meridians</div></div>
+  <div class="cell" id="g4"><div class="label">V4 — Layered Rings</div></div>
+</div>
+
+<script>
+// Shared brand palette
+const B = {
+  royal:   [54,41,131],
+  olive:   [63,161,98],
+  mustard: [239,177,66],
+  sky:     [207,223,232],
+  mint:    [206,221,199],
+  lilac:   [231,226,232]
+};
+
+// ============================================================
+// V1 — BOLD WIREFRAME GLOBE
+// Classic lat/lon wireframe, thick lines, strong color
+// ============================================================
+new p5(function(p) {
+  let radius;
+  let rotY = 0;
+
+  p.setup = function() {
+    let el = document.getElementById('g1');
+    let c = p.createCanvas(el.offsetWidth, el.offsetWidth);
+    c.parent('g1');
+    p.frameRate(30);
+    radius = p.min(p.width, p.height) * 0.34;
+  };
+
+  p.draw = function() {
+    p.background(255);
+    let cx = p.width / 2, cy = p.height / 2;
+    let t = p.frameCount * 0.006;
+    rotY += 0.005;
+
+    // Latitude lines
+    let latCount = 12;
+    for (let i = 1; i < latCount; i++) {
+      let phi = p.map(i, 0, latCount, -p.HALF_PI, p.HALF_PI);
+      let ringR = p.cos(phi) * radius;
+      let ringY = p.sin(phi) * radius;
+
+      // Alternate brand colors
+      let palettes = [B.royal, B.olive, B.mustard];
+      let col = palettes[i % 3];
+      let alphaVal = p.map(p.abs(phi), 0, p.HALF_PI, 180, 50);
+      let sw = p.map(p.abs(phi), 0, p.HALF_PI, 3.5, 1.5);
+
+      p.stroke(col[0], col[1], col[2], alphaVal);
+      p.strokeWeight(sw);
+      p.noFill();
+
+      p.beginShape();
+      for (let lon = 0; lon <= p.TWO_PI; lon += 0.06) {
+        let x3d = p.cos(lon + rotY) * ringR;
+        let z3d = p.sin(lon + rotY) * ringR;
+        let wave = p.sin(phi * 4 + t * 3 + lon * 2) * radius * 0.018;
+        let px = cx + x3d + wave;
+        let py = cy + ringY;
+
+        if (p.sin(lon + rotY) > -0.05) {
+          p.vertex(px, py);
+        } else {
+          p.endShape();
+          p.beginShape();
+        }
+      }
+      p.endShape();
+    }
+
+    // Longitude meridians
+    let lonCount = 16;
+    for (let j = 0; j < lonCount; j++) {
+      let theta = p.map(j, 0, lonCount, 0, p.TWO_PI) + rotY;
+      if (p.sin(theta) < -0.1) continue;
+
+      let palettes = [B.royal, B.sky, B.mint];
+      let col = palettes[j % 3];
+      let depthAlpha = p.map(p.sin(theta), -0.1, 1, 40, 160);
+
+      p.stroke(col[0], col[1], col[2], depthAlpha);
+      p.strokeWeight(2.5);
+      p.noFill();
+
+      p.beginShape();
+      for (let phi = -p.HALF_PI; phi <= p.HALF_PI; phi += 0.05) {
+        let ringR = p.cos(phi) * radius;
+        let ringY = p.sin(phi) * radius;
+        let x3d = p.cos(theta) * ringR;
+        let wave = p.sin(phi * 5 + t * 2) * radius * 0.012;
+        p.vertex(cx + x3d + wave, cy + ringY);
+      }
+      p.endShape();
+    }
+  };
+
+  p.windowResized = function() {
+    let el = document.getElementById('g1');
+    p.resizeCanvas(el.offsetWidth, el.offsetWidth);
+    radius = p.min(p.width, p.height) * 0.34;
+  };
+});
+
+// ============================================================
+// V2 — NETWORK SPHERE + DATA STREAMS
+// Connected particle network on sphere, green data streams as
+// segmented columns with per-segment opacity (generative feel)
+// ============================================================
+new p5(function(p) {
+  let radius;
+  let rotY = 0;
+  let nodes = [];
+  let streams = [];
+
+  p.setup = function() {
+    let el = document.getElementById('g2');
+    let c = p.createCanvas(el.offsetWidth, el.offsetWidth);
+    c.parent('g2');
+    p.frameRate(30);
+    radius = p.min(p.width, p.height) * 0.34;
+
+    // Sphere nodes — fibonacci lattice
+    let n = 300;
+    for (let i = 0; i < n; i++) {
+      let phi = p.asin(-1 + 2 * i / n);
+      let theta = 2.399963 * i;
+      let sizeNoise = p.noise(phi * 3 + 10, theta * 0.6);
+      nodes.push({ phi, theta, size: sizeNoise, idx: i });
+    }
+
+    // Data streams — columns of tiny segments with individual opacities
+    let numStreams = 22;
+    let cx = p.width / 2;
+    for (let i = 0; i < numStreams; i++) {
+      streams.push(makeStream(p, cx, true));
+    }
+  };
+
+  function makeStream(p, cx, randomY) {
+    let spread = radius * 1.2;
+    let x = cx + p.random(-spread, spread);
+    let segCount = p.floor(p.random(6, 18));
+    let segs = [];
+    for (let s = 0; s < segCount; s++) {
+      segs.push(p.random(0.08, 1)); // each segment has its own opacity weight
+    }
+    return {
+      x: x,
+      y: randomY ? p.random(-radius, p.height * 0.8) : p.random(-radius * 1.6, -20),
+      speed: p.random(0.8, 2.5),
+      segH: p.random(2, 5),     // height per segment
+      gap: p.random(2, 6),      // gap between segments
+      segs: segs,
+      life: 0
+    };
+  }
+
+  p.draw = function() {
+    p.background(255);
+    let cx = p.width / 2, cy = p.height / 2;
+    let t = p.frameCount * 0.004;
+    rotY += 0.003;
+
+    // Purple shades
+    let purples = [
+      [54,41,131], [106,90,203], [133,119,212], [159,148,221]
+    ];
+
+    // --- Collect visible node positions for connection drawing ---
+    let visNodes = [];
+    for (let nd of nodes) {
+      let theta = nd.theta + rotY;
+      let facing = p.sin(theta);
+      if (facing < 0) continue;
+
+      let dR = p.cos(nd.phi) * radius;
+      let px = cx + p.cos(theta) * dR;
+      let py = cy + p.sin(nd.phi) * radius;
+      let depth = facing; // 0..1
+
+      visNodes.push({ px, py, depth, size: nd.size, idx: nd.idx });
+    }
+
+    // --- Draw connections between nearby nodes (network mesh) ---
+    let connectDist = radius * 0.32;
+    for (let i = 0; i < visNodes.length; i++) {
+      let a = visNodes[i];
+      for (let j = i + 1; j < visNodes.length; j++) {
+        let b = visNodes[j];
+        let d = p.dist(a.px, a.py, b.px, b.py);
+        if (d < connectDist) {
+          let alpha = p.map(d, 0, connectDist, 200, 40) * p.min(a.depth, b.depth);
+          let col = purples[1]; // Purple 58% for connections — visible
+          p.stroke(col[0], col[1], col[2], alpha);
+          p.strokeWeight(1.8);
+          p.line(a.px, a.py, b.px, b.py);
+        }
+      }
+    }
+
+    // --- Draw nodes ---
+    p.noStroke();
+    for (let nd of visNodes) {
+      let col = purples[nd.idx % purples.length];
+      let alpha = p.map(nd.depth, 0, 1, 120, 255);
+
+      // Size range from 3 to 12 — big and bold
+      let s = p.map(nd.size, 0, 1, 3, 12) * p.map(nd.depth, 0, 1, 0.6, 1);
+      let pulse = p.sin(t * 2.5 + nd.idx * 0.2) * s * 0.12;
+
+      p.fill(col[0], col[1], col[2], alpha);
+      p.ellipse(nd.px, nd.py, s + pulse, s + pulse);
+    }
+
+    // --- Green data streams (segmented columns) ---
+    p.noStroke();
+    for (let st of streams) {
+      let distFromCenter = p.dist(st.x, st.y + st.segs.length * (st.segH + st.gap) * 0.5, cx, cy);
+      let globeProximity = distFromCenter < radius * 1.1
+        ? p.map(distFromCenter, 0, radius * 1.1, 0.4, 1)
+        : 1;
+
+      for (let s = 0; s < st.segs.length; s++) {
+        let segY = st.y + s * (st.segH + st.gap);
+        let ripple = p.sin(t * 4 + s * 0.8 + st.x * 0.01) * 0.2 + 0.8;
+        let a = st.segs[s] * ripple * globeProximity * 255;
+
+        p.fill(63, 161, 98, a);
+        p.rect(st.x, segY, 2.5, st.segH);
+      }
+
+      st.y += st.speed;
+      st.life++;
+
+      // Reset
+      let totalH = st.segs.length * (st.segH + st.gap);
+      if (st.y > cy + radius * 1.3) {
+        let ns = makeStream(p, cx, false);
+        Object.assign(st, ns);
+      }
+    }
+  };
+
+  p.windowResized = function() {
+    let el = document.getElementById('g2');
+    p.resizeCanvas(el.offsetWidth, el.offsetWidth);
+    radius = p.min(p.width, p.height) * 0.34;
+  };
+});
+
+// ============================================================
+// V3 — FLOWING MERIDIANS
+// Thick flowing lines with wave distortion, hero-sketch energy
+// ============================================================
+new p5(function(p) {
+  let radius;
+  let rotY = 0;
+
+  p.setup = function() {
+    let el = document.getElementById('g3');
+    let c = p.createCanvas(el.offsetWidth, el.offsetWidth);
+    c.parent('g3');
+    p.frameRate(30);
+    radius = p.min(p.width, p.height) * 0.34;
+  };
+
+  p.draw = function() {
+    p.background(255);
+    let cx = p.width / 2, cy = p.height / 2;
+    let t = p.frameCount * 0.008;
+    rotY += 0.003;
+
+    let colors = [B.royal, B.olive, B.mustard, B.royal, B.olive, B.mustard];
+
+    // Thick flowing meridians with heavy wave distortion
+    let lonCount = 24;
+    for (let j = 0; j < lonCount; j++) {
+      let theta = p.map(j, 0, lonCount, 0, p.TWO_PI) + rotY;
+      if (p.sin(theta) < -0.05) continue;
+
+      let col = colors[j % colors.length];
+      let depthAlpha = p.map(p.sin(theta), -0.05, 1, 30, 200);
+      let sw = p.map(p.sin(theta), -0.05, 1, 1, 4.5);
+
+      p.stroke(col[0], col[1], col[2], depthAlpha);
+      p.strokeWeight(sw);
+      p.noFill();
+
+      p.beginShape();
+      for (let phi = -p.HALF_PI; phi <= p.HALF_PI; phi += 0.04) {
+        let ringR = p.cos(phi) * radius;
+        let ringY = p.sin(phi) * radius;
+        let x3d = p.cos(theta) * ringR;
+
+        // Strong organic wave — hero-sketch inspired
+        let wave = p.sin(phi * 6 + t * 2.5 + theta * 3) * radius * 0.045;
+        let breathe = p.sin(t * 1.8 + theta * 2 + phi * 4) * radius * 0.025;
+
+        p.vertex(cx + x3d + wave, cy + ringY + breathe);
+      }
+      p.endShape();
+    }
+
+    // A few bold latitude bands
+    let latBands = [-0.6, -0.2, 0.15, 0.5];
+    for (let k = 0; k < latBands.length; k++) {
+      let phi = latBands[k];
+      let ringR = p.cos(phi) * radius;
+      let ringY = p.sin(phi) * radius;
+
+      let col = [B.mustard, B.olive, B.royal, B.mustard][k];
+      p.stroke(col[0], col[1], col[2], 140);
+      p.strokeWeight(3);
+      p.noFill();
+
+      p.beginShape();
+      for (let lon = 0; lon <= p.TWO_PI; lon += 0.05) {
+        let x3d = p.cos(lon + rotY) * ringR;
+        let wave = p.sin(lon * 3 + t * 2 + phi * 5) * radius * 0.03;
+        if (p.sin(lon + rotY) > -0.05) {
+          p.vertex(cx + x3d, cy + ringY + wave);
+        } else {
+          p.endShape();
+          p.beginShape();
+        }
+      }
+      p.endShape();
+    }
+  };
+
+  p.windowResized = function() {
+    let el = document.getElementById('g3');
+    p.resizeCanvas(el.offsetWidth, el.offsetWidth);
+    radius = p.min(p.width, p.height) * 0.34;
+  };
+});
+
+// ============================================================
+// V4 — LAYERED RINGS
+// Concentric latitude rings with varying thickness and color,
+// rotating at different speeds — feels like a data visualization
+// ============================================================
+new p5(function(p) {
+  let radius;
+  let rotY = 0;
+
+  p.setup = function() {
+    let el = document.getElementById('g4');
+    let c = p.createCanvas(el.offsetWidth, el.offsetWidth);
+    c.parent('g4');
+    p.frameRate(30);
+    radius = p.min(p.width, p.height) * 0.34;
+  };
+
+  p.draw = function() {
+    p.background(255);
+    let cx = p.width / 2, cy = p.height / 2;
+    let t = p.frameCount * 0.007;
+    rotY += 0.004;
+
+    let ringDefs = [
+      { phi: -1.2, col: B.lilac,   sw: 2.5, speed: 1.0 },
+      { phi: -0.9, col: B.sky,     sw: 3.0, speed: 0.8 },
+      { phi: -0.6, col: B.mint,    sw: 4.0, speed: 1.2 },
+      { phi: -0.35,col: B.olive,   sw: 5.0, speed: 0.7 },
+      { phi: -0.1, col: B.mustard, sw: 5.5, speed: 1.0 },
+      { phi: 0.1,  col: B.royal,   sw: 5.5, speed: 0.9 },
+      { phi: 0.35, col: B.olive,   sw: 5.0, speed: 1.1 },
+      { phi: 0.6,  col: B.mustard, sw: 4.0, speed: 0.8 },
+      { phi: 0.9,  col: B.sky,     sw: 3.0, speed: 1.3 },
+      { phi: 1.2,  col: B.lilac,   sw: 2.5, speed: 0.6 }
+    ];
+
+    for (let rd of ringDefs) {
+      let phi = rd.phi;
+      let ringR = p.cos(phi) * radius;
+      let ringY = p.sin(phi) * radius;
+      let localRot = rotY * rd.speed;
+
+      let breathe = p.sin(t * 2 + phi * 3) * 0.15 + 1;
+
+      p.stroke(rd.col[0], rd.col[1], rd.col[2], 180 * breathe);
+      p.strokeWeight(rd.sw * breathe);
+      p.noFill();
+
+      p.beginShape();
+      for (let lon = 0; lon <= p.TWO_PI; lon += 0.05) {
+        let x3d = p.cos(lon + localRot) * ringR;
+        let z3d = p.sin(lon + localRot) * ringR;
+
+        // Subtle wave
+        let wave = p.sin(lon * 3 + t * 2 + phi * 4) * radius * 0.02;
+
+        if (z3d > -ringR * 0.1) {
+          let depthScale = p.map(z3d, -ringR * 0.1, ringR, 0.4, 1);
+          p.strokeWeight(rd.sw * breathe * depthScale);
+          p.vertex(cx + x3d, cy + ringY + wave);
+        } else {
+          p.endShape();
+          p.beginShape();
+        }
+      }
+      p.endShape();
+    }
+
+    // Center accent dot
+    let pulse = p.sin(t * 3) * 0.3 + 1;
+    p.noStroke();
+    p.fill(B.royal[0], B.royal[1], B.royal[2], 40);
+    p.ellipse(cx, cy, 12 * pulse, 12 * pulse);
+  };
+
+  p.windowResized = function() {
+    let el = document.getElementById('g4');
+    p.resizeCanvas(el.offsetWidth, el.offsetWidth);
+    radius = p.min(p.width, p.height) * 0.34;
+  };
+});
+</script>
+</body>
+</html>

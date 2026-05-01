@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why Now - 3 Design Options | LEBEC</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --royal: #362983;
+      --royal-dark: #2a1f66;
+      --mustard: #EFB142;
+      --ivory: #F6F1E8;
+      --lilac: #E7E2E8;
+      --sky: #CFDFE8;
+      --mint: #CEDDC7;
+      --olive: #3FA162;
+      --black: #1a1a1a;
+      --white: #FFFFFF;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'Poppins', system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      background: #f0ebe3;
+      color: var(--black);
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 3rem 2rem 1rem;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--royal);
+    }
+
+    .page-header p {
+      color: #666;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .option-label {
+      text-align: center;
+      padding: 2rem 2rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--royal);
+    }
+
+    .option-label span {
+      background: var(--royal);
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+    }
+
+    .divider {
+      max-width: 1200px;
+      margin: 3rem auto;
+      border: none;
+      border-top: 2px dashed #ccc;
+    }
+
+    /* =========================================
+       SHARED
+       ========================================= */
+
+    .section {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 4rem clamp(1.5rem, 5vw, 3rem);
+      background: var(--sky);
+      border-radius: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--black);
+      margin-bottom: 2.5rem;
+    }
+
+    .summary-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      font-style: italic;
+      color: var(--royal);
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    /* =========================================
+       OPTION A: Stats top + royal context cards below
+       ========================================= */
+
+    .opt-a .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .opt-a .stat-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2rem 1.75rem;
+      box-shadow: 0 2px 12px rgba(54,41,131,0.06);
+    }
+
+    .opt-a .stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: var(--royal);
+      margin-bottom: 0.5rem;
+    }
+
+    .opt-a .stat-label {
+      font-size: 0.95rem;
+      color: var(--black);
+      line-height: 1.5;
+    }
+
+    .opt-a .context-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .opt-a .context-card {
+      background: var(--royal);
+      color: white;
+      border-radius: 12px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .opt-a .context-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 80px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 0 12px 0 80px;
+    }
+
+    .opt-a .context-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--mustard);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+
+    .opt-a .context-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .opt-a .context-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+
+    /* =========================================
+       OPTION B: 5-card grid, mustard accent border
+       ========================================= */
+
+    .opt-b .unified-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .opt-b .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2rem 1.75rem;
+      box-shadow: 0 2px 12px rgba(54,41,131,0.06);
+    }
+
+    .opt-b .card--accent {
+      background: var(--white);
+      border-left: 4px solid var(--mustard);
+    }
+
+    .opt-b .card--accent:nth-child(4) {
+      grid-column: 1 / 2;
+    }
+
+    .opt-b .card--accent:nth-child(5) {
+      grid-column: 2 / 4;
+    }
+
+    .opt-b .card .stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: var(--royal);
+      margin-bottom: 0.5rem;
+    }
+
+    .opt-b .card .stat-label {
+      font-size: 0.95rem;
+      color: var(--black);
+      line-height: 1.5;
+    }
+
+    .opt-b .card .context-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 0.13rem;
+    }
+
+    .opt-b .card .context-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--royal);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .opt-b .card .context-desc {
+      font-size: 0.95rem;
+      color: var(--black);
+      line-height: 1.6;
+    }
+
+
+    /* =========================================
+       OPTION C: Two-column layout
+       ========================================= */
+
+    .opt-c .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+      margin-bottom: 3rem;
+    }
+
+    .opt-c .stats-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .opt-c .stat-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .opt-c .stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: var(--royal);
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .opt-c .stat-label {
+      font-size: 0.95rem;
+      color: var(--black);
+      line-height: 1.5;
+    }
+
+    .opt-c .context-panel {
+      background: var(--royal);
+      color: white;
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+    }
+
+    .opt-c .context-panel h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--mustard);
+    }
+
+    .opt-c .context-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .opt-c .context-list li {
+      font-size: 1rem;
+      line-height: 1.6;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .opt-c .context-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 8px;
+      height: 8px;
+      background: var(--mustard);
+      border-radius: 50%;
+    }
+
+    .opt-c .context-list li strong {
+      color: var(--mustard);
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+       ========================================= */
+
+    @media (max-width: 900px) {
+      .opt-a .stats-row { grid-template-columns: 1fr; }
+      .opt-a .context-row { grid-template-columns: 1fr; }
+      .opt-b .unified-grid { grid-template-columns: 1fr; }
+      .opt-b .card--accent:nth-child(4),
+      .opt-b .card--accent:nth-child(5) { grid-column: span 1; }
+      .opt-c .two-col { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <h1>Why Now &mdash; Design Options</h1>
+    <p>3 ways to integrate the "Global systemic risks" and "Asset owners" points alongside the 3 stat cards</p>
+  </div>
+
+  <!-- ============ OPTION A ============ -->
+  <div class="option-label"><span>Option A</span> &mdash; Stats on top, two royal-blue context cards below</div>
+
+  <section class="section opt-a">
+    <h2 class="section-title">Why Now</h2>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number">$128T</div>
+        <div class="stat-label">in global assets under management.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$50T</div>
+        <div class="stat-label">wealth transfer over the next decade.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$1.5T</div>
+        <div class="stat-label">impact investing industry still siloed.</div>
+      </div>
+    </div>
+
+    <div class="context-row">
+      <div class="context-card">
+        <div class="context-icon">&#9888;</div>
+        <div class="context-title">Global systemic risks are accelerating</div>
+        <div class="context-desc">Climate, water, food insecurity, antiquated infrastructure&mdash;the crises aren't waiting.</div>
+      </div>
+      <div class="context-card">
+        <div class="context-icon">&#9878;</div>
+        <div class="context-title">Asset owners need new strategies</div>
+        <div class="context-desc">They urgently need diversified portfolio strategies reducing risk, and generating strong financial and impact performance.</div>
+      </div>
+    </div>
+
+    <p class="summary-text">The market is primed for a platform like LEBEC that is mainstreaming innovative finance through strategic advisory + investment management + narrative change.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ OPTION B ============ -->
+  <div class="option-label"><span>Option B</span> &mdash; Unified 5-card grid (context cards have mustard left border)</div>
+
+  <section class="section opt-b">
+    <h2 class="section-title">Why Now</h2>
+
+    <div class="unified-grid">
+      <div class="card">
+        <div class="stat-number">$128T</div>
+        <div class="stat-label">in global assets under management.</div>
+      </div>
+      <div class="card">
+        <div class="stat-number">$50T</div>
+        <div class="stat-label">wealth transfer over the next decade.</div>
+      </div>
+      <div class="card">
+        <div class="stat-number">$1.5T</div>
+        <div class="stat-label">impact investing industry still siloed.</div>
+      </div>
+      <div class="card card--accent">
+        <div class="context-label">The urgency</div>
+        <div class="context-title">Global systemic risks are accelerating</div>
+        <div class="context-desc">Climate, water, food insecurity, antiquated infrastructure&mdash;the crises aren't waiting.</div>
+      </div>
+      <div class="card card--accent">
+        <div class="context-label">The need</div>
+        <div class="context-title">Asset owners need new strategies</div>
+        <div class="context-desc">They urgently need diversified portfolio strategies reducing risk, and generating strong financial and impact performance.</div>
+      </div>
+    </div>
+
+    <p class="summary-text">The market is primed for a platform like LEBEC that is mainstreaming innovative finance through strategic advisory + investment management + narrative change.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ OPTION C ============ -->
+  <div class="option-label"><span>Option C</span> &mdash; Two-column: stats left, context panel right</div>
+
+  <section class="section opt-c">
+    <h2 class="section-title">Why Now</h2>
+
+    <div class="two-col">
+      <div class="stats-column">
+        <div class="stat-item">
+          <div class="stat-number">$128T</div>
+          <div class="stat-label">in global assets under management.</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">$50T</div>
+          <div class="stat-label">wealth transfer over the next decade.</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">$1.5T</div>
+          <div class="stat-label">impact investing industry still siloed.</div>
+        </div>
+      </div>
+
+      <div class="context-panel">
+        <h3>And yet&hellip;</h3>
+        <ul class="context-list">
+          <li><strong>Global systemic risks</strong>&mdash;climate, water, food insecurity, antiquated infrastructure&mdash;are accelerating.</li>
+          <li><strong>Asset owners</strong> urgently need diversified portfolio strategies reducing risk, and generating strong financial and impact performance.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="summary-text">The market is primed for a platform like LEBEC that is mainstreaming innovative finance through strategic advisory + investment management + narrative change.</p>
+  </section>
+
+  <div style="height: 4rem;"></div>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEBEC Green Rain — V3</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .frame {
+      position: relative;
+      width: 500px;
+      height: 580px;
+      overflow: hidden;
+    }
+    .frame img {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      height: 500px;
+      object-fit: contain;
+      z-index: 0;
+    }
+    .frame canvas {
+      position: absolute !important;
+      top: 0; left: 0;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+<div class="frame" id="g3">
+  <img src="../images/earth.png" alt="">
+</div>
+
+<script>
+const G = [63, 161, 98]; // #3FA162
+
+// V3 — CASCADING COLUMNS
+// Rain starts from the sky (top 300px of empty space) and falls
+// down onto the building image at the bottom
+new p5(function(p) {
+  let columns = [];
+
+  p.setup = function() {
+    let el = document.getElementById('g3');
+    let c = p.createCanvas(el.offsetWidth, el.offsetHeight);
+    c.parent('g3');
+    p.frameRate(30);
+    p.noStroke();
+
+    for (let i = 0; i < 30; i++) {
+      columns.push(makeColumn(p, true));
+    }
+  };
+
+  function makeColumn(p, init) {
+    let size = p.random([5, 6, 8, 10, 12]);
+    let numBlocks = p.floor(p.random(4, 14));
+    let gap = p.random(3, 8);
+    let blocks = [];
+    for (let b = 0; b < numBlocks; b++) {
+      blocks.push(p.random(60, 255));
+    }
+    return {
+      x: p.random(p.width * 0.05, p.width * 0.95),
+      y: init ? p.random(-600, p.height * 0.3) : p.random(-800, -100),
+      size: size,
+      gap: gap,
+      speed: p.map(size, 5, 12, 1, 3),
+      blocks: blocks
+    };
+  }
+
+  p.draw = function() {
+    p.clear();
+    p.noStroke();
+
+    for (let col of columns) {
+      for (let b = 0; b < col.blocks.length; b++) {
+        let by = col.y + b * (col.size + col.gap);
+        if (by < -col.size || by > p.height) continue;
+
+        p.fill(G[0], G[1], G[2], col.blocks[b]);
+        p.rect(col.x, by, col.size, col.size);
+      }
+
+      col.y += col.speed;
+
+      let totalH = col.blocks.length * (col.size + col.gap);
+      if (col.y > p.height + 20) {
+        let nc = makeColumn(p, false);
+        Object.assign(col, nc);
+      }
+    }
+  };
+
+  p.windowResized = function() {
+    let el = document.getElementById('g3');
+    p.resizeCanvas(el.offsetWidth, el.offsetHeight);
+  };
+});
+</script>
+</body>
+</html>
