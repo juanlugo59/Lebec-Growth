@@ -543,6 +543,16 @@ body {
   line-height: 1.4;
 }
 
+.hero-description {
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  font-weight: 400;
+  color: var(--lilac);
+  max-width: 640px;
+  margin: 1.5rem auto 0;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
 .hero-stats {
   margin-bottom: 4rem;
 }
