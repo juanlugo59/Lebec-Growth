@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEBEC | Growth Capital</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Fonts: Distinctive pairing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css?v=nocache">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- P5.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+
+  <!-- D3.js (for financial projections chart) -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <!-- All styles in css/style.css -->
+</head>
+<body>
+
+  <!-- Noise Texture -->
+  <div class="noise"></div>
+
+  <!-- Password Gate -->
+  <div id="gate" class="gate">
+    <div class="gate-inner">
+      <img src="images/lebec-white logo-high res.png" alt="LEBEC" class="gate-logo-img">
+      <form id="gate-form" class="gate-form">
+        <input type="password" id="gate-input" class="gate-input" placeholder="Password" autocomplete="off">
+        <button type="submit" class="gate-btn">Enter</button>
+      </form>
+      <p id="gate-error" class="gate-error"></p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main">
+
+    <!-- Hero Section (Original - Logo focused with P5.js) -->
+    <section id="hero" class="section hero">
+      <!-- P5.js Canvas Container -->
+      <div id="hero-canvas-container"></div>
+
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-logo-group">
+            <img src="images/lebec-white logo-high res.png" alt="LEBEC" class="hero-logo hero-logo-large">
+            <p class="hero-tagline">We are a platform using innovative finance and technology to secure $5B in assets under management for a resilient, thriving planet.</p>
+            <p class="hero-description">LEBEC is an innovative finance platform securing $5 billion in assets under management over the next decade for a resilient planet. Through our three integrated pillars, we advise, we invest, and we power narrative change.</p>
+          </div>
+          <a href="#gap" class="scroll-indicator fade-up delay-3">
+            <span>Scroll to explore</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Problem -->
+    <section id="gap" class="section gap">
+      <div class="container">
+        <div class="gap-grid">
+          <div class="gap-content reveal-left">
+            <h2 class="section-title gap-title">The World is Underinvesting Where It Matters Most:</h2>
+            <ul class="gap-bullets">
+              <li><strong>$5T</strong> annual shortfall in financing solutions building a resilient planet. Innovative finance can close the gap.</li>
+              <li><strong>Investors want more exposure to systemic solutions, but</strong> lack access to diversified portfolios of private market funds scaling them.</li>
+              <li><strong>Outdated philanthropic models</strong> keep social entrepreneurs and enterprises in survival mode.</li>
+            </ul>
+            <p class="gap-result"><strong>Result:</strong> Trillions of dollars are left on the sidelines&mdash;and systemic risks are growing.</p>
+          </div>
+          <div class="gap-visual reveal-right">
+            <div class="gap-rain-wrapper" id="gap-rain">
+              <img src="images/earth.png" alt="" class="gap-rain-img">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Now -->
+    <section class="section why-now">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <h2 class="section-title">Why Now</h2>
+        </div>
+
+        <div class="stats-grid stagger">
+          <div class="stat-card">
+            <div class="stat-number">$128T</div>
+            <div class="stat-label">in global assets under management.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">$50T</div>
+            <div class="stat-label">wealth transfer over the next decade.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">$1.5T</div>
+            <div class="stat-label">impact investing industry still siloed.</div>
+          </div>
+          <div class="stat-card stat-card--context">
+            <div class="context-label">The urgency</div>
+            <div class="context-title">Global systemic risks are accelerating</div>
+            <div class="context-desc">Climate, water, food insecurity, antiquated infrastructure&mdash;the crises aren't waiting.</div>
+          </div>
+          <div class="stat-card stat-card--context">
+            <div class="context-label">The need</div>
+            <div class="context-title">Asset owners need new strategies</div>
+            <div class="context-desc">They urgently need diversified portfolio strategies reducing risk, and generating strong financial and impact performance.</div>
+          </div>
+        </div>
+
+        <p class="why-now-summary reveal">The market is primed for a platform like LEBEC that is mainstreaming innovative finance through strategic advisory + investment management + narrative change.</p>
+      </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="section solution">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <h2 class="section-title section-title--light">The Creative Space Between</h2>
+        </div>
+
+        <p class="solution-intro reveal">LEBEC operates in the creative space between traditional philanthropy and traditional finance—where capital is deployed strategically to scale systemic solutions.</p>
+
+        <div class="pillars stagger">
+          <div class="pillar">
+            <div class="pillar-number">01</div>
+            <h3 class="pillar-title">Strategic Advisory</h3>
+            <p class="pillar-desc">Guiding asset owners and social entrepreneurs on innovative finance strategies, value propositions, and solutions.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-number">02</div>
+            <h3 class="pillar-title">Investment Management</h3>
+            <p class="pillar-desc">Building diversified private-market fund portfolios through LEBEC Capital Partners, scaling systemic solutions. Includes developing and managing fund of funds.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-number">03</div>
+            <h3 class="pillar-title">Narrative Change</h3>
+            <p class="pillar-desc">We shift narratives on innovative finance across media and entertainment—demonstrating its vital role in scaling solutions. We're bringing a proven blended capital model to narrative change.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section class="section team">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <h2 class="section-title">20+ Year Proven Track Record</h2>
+        </div>
+
+        <div class="team-grid stagger">
+          <div class="team-card" data-index="0">
+            <div class="team-photo-wrap">
+              <img src="images/Alix.png" alt="Alix Lebec" class="team-photo">
+            </div>
+            <h3 class="team-name">Alix Lebec</h3>
+            <p class="team-role">Founder & CEO</p>
+            <p class="team-credential">Founding Executive. Co-built and led $200M+ global asset manager (WaterEquity)</p>
+            <button class="team-read-bio"><span>Read Bio</span></button>
+          </div>
+          <div class="team-card" data-index="1">
+            <div class="team-photo-wrap">
+              <img src="images/Julia.png" alt="Julia Wilkinson" class="team-photo">
+            </div>
+            <h3 class="team-name">Julia Wilkinson</h3>
+            <p class="team-role">Managing Partner & CIO</p>
+            <p class="team-credential">Managed $1.5B wealth management portfolio at Goldman Sachs</p>
+            <button class="team-read-bio"><span>Read Bio</span></button>
+          </div>
+          <div class="team-card" data-index="2">
+            <div class="team-photo-wrap">
+              <img src="images/Rafia.png" alt="Rafia Qureshi" class="team-photo">
+            </div>
+            <h3 class="team-name">Rafia Qureshi</h3>
+            <p class="team-role">Managing Director, EMEA & Asia</p>
+            <p class="team-credential">Oversaw $250M annually in social investments at JPMorgan Chase</p>
+            <button class="team-read-bio"><span>Read Bio</span></button>
+          </div>
+          <div class="team-card" data-index="3">
+            <div class="team-photo-wrap">
+              <img src="images/Hannah.png" alt="Hannah Kovich" class="team-photo">
+            </div>
+            <h3 class="team-name">Hannah Kovich</h3>
+            <p class="team-role">Managing Director & Senior Investment Analyst</p>
+            <p class="team-credential">15+ years in innovative finance. Founding team at WaterEquity</p>
+            <button class="team-read-bio"><span>Read Bio</span></button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Revenue - Interactive Tabs -->
+    <section class="section revenue">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <h2 class="section-title">Three Revenue Streams</h2>
+        </div>
+
+        <div class="tabs-container reveal">
+          <div class="tabs-nav">
+            <button class="tab-btn active" data-tab="tab1">
+              <span class="tab-number">01</span>
+              <span class="tab-label">Advisory</span>
+            </button>
+            <button class="tab-btn" data-tab="tab2">
+              <span class="tab-number">02</span>
+              <span class="tab-label">Investment</span>
+            </button>
+            <button class="tab-btn" data-tab="tab3">
+              <span class="tab-number">03</span>
+              <span class="tab-label">Narrative</span>
+            </button>
+          </div>
+
+          <div class="tabs-content">
+            <div class="tab-panel active" id="tab1">
+              <div class="panel-text">
+                <span class="panel-number">01</span>
+                <h3 class="panel-title">Strategic Advisory</h3>
+                <p class="panel-type">Retainers + Project Fees</p>
+                <p>Guiding asset owners and social entrepreneurs on innovative finance strategies, value propositions, and scalable solutions that bridge philanthropy and traditional capital markets.</p>
+              </div>
+              <div class="panel-image">
+                <img src="images/Strategic Advisory.png" alt="Strategic Advisory">
+              </div>
+            </div>
+            <div class="tab-panel" id="tab2">
+              <div class="panel-text">
+                <span class="panel-number">02</span>
+                <h3 class="panel-title">Investment Management</h3>
+                <p class="panel-type">Management Fees</p>
+                <p>Building diversified private-market fund portfolios through LEBEC Capital Partners, scaling systemic solutions. Includes developing and managing fund of funds.</p>
+              </div>
+              <div class="panel-image">
+                <img src="images/Investment Management.png" alt="Investment Management">
+              </div>
+            </div>
+            <div class="tab-panel" id="tab3">
+              <div class="panel-text">
+                <span class="panel-number">03</span>
+                <h3 class="panel-title">Narrative Change</h3>
+                <p class="panel-type">Project + EP Fees</p>
+                <p>We shift narratives on innovative finance across media and entertainment—demonstrating its vital role in scaling solutions. We're bringing a proven blended capital model to narrative change.</p>
+              </div>
+              <div class="panel-image">
+                <img src="images/Narrative Change.png" alt="Narrative Change">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="revenue-note reveal">Scalable, asset-light model with compounding revenue over time.</p>
+      </div>
+    </section>
+
+    <!-- Financials -->
+    <section class="section financials">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <h2 class="section-title section-title--light">Path to Scale</h2>
+        </div>
+
+        <div class="financials-grid stagger">
+          <div class="financial-card">
+            <div class="financial-value">$740K</div>
+            <div class="financial-label">Annual revenue (Year 0)</div>
+          </div>
+          <div class="financial-card">
+            <div class="financial-value">EBITDA+</div>
+            <div class="financial-label">Positive since inception</div>
+          </div>
+          <div class="financial-card">
+            <div class="financial-value">Year 3</div>
+            <div class="financial-label">Target break-even post-raise</div>
+          </div>
+          <div class="financial-card">
+            <div class="financial-value">$35M+</div>
+            <div class="financial-label">Projected EBITDA by Year 10</div>
+          </div>
+        </div>
+
+        <!-- Flip Card: Chart on front, Data table on back -->
+        <div class="flip-card-container reveal">
+          <div class="flip-card" id="flip-card-financials">
+
+            <!-- FRONT: Interactive Chart -->
+            <div class="flip-card-front">
+              <button class="flip-icon-btn" onclick="toggleFlip('flip-card-financials')" title="View source data">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
+                </svg>
+              </button>
+              <span class="flip-hint">View data</span>
+
+              <h3 class="flip-card-title">LEBEC Financial Projections</h3>
+              <p class="flip-card-desc">Interactive multi-line chart with hover tooltips showing all metrics per year. Toggle metrics on/off below.</p>
+
+              <div class="chart-controls" id="controls-financials">
+                <button class="toggle-btn active" data-metric="revenue">Revenue</button>
+                <button class="toggle-btn active" data-metric="ebitda">EBITDA</button>
+              </div>
+
+              <div class="chart-container" id="chart-financials"></div>
+
+              <div class="chart-legend">
+                <div class="legend-item" data-metric="revenue">
+                  <div class="legend-color" style="background: var(--graph-2)"></div>
+                  <span>Net Revenue</span>
+                </div>
+                <div class="legend-item" data-metric="ebitda">
+                  <div class="legend-color" style="background: var(--graph-3)"></div>
+                  <span>Operating Income / EBITDA</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- BACK: Source Data Table -->
+            <div class="flip-card-back">
+              <button class="flip-icon-btn" onclick="toggleFlip('flip-card-financials')" title="View chart">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
+                </svg>
+              </button>
+              <span class="flip-hint">View chart</span>
+
+              <h3 class="flip-card-title">LEBEC Financial Projections</h3>
+              <p class="flip-card-desc">Financial projections data table with all metrics per year.</p>
+
+              <div class="data-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Metric (000's)</th>
+                      <th>Year 0</th>
+                      <th>Year 1</th>
+                      <th>Year 2</th>
+                      <th>Year 3</th>
+                      <th>Year 4</th>
+                      <th>Year 5</th>
+                      <th>Year 6</th>
+                      <th>Year 7</th>
+                      <th>Year 8</th>
+                      <th>Year 9</th>
+                      <th>Year 10</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Total AUM</strong></td>
+                      <td>$—</td>
+                      <td>$50,700</td>
+                      <td>$100,910</td>
+                      <td>$201,183</td>
+                      <td>$401,538</td>
+                      <td>$681,999</td>
+                      <td>$1,090,599</td>
+                      <td>$1,689,779</td>
+                      <td>$2,533,992</td>
+                      <td>$3,547,150</td>
+                      <td>$4,611,295</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Total Revenue</strong></td>
+                      <td>$740</td>
+                      <td>$1,950</td>
+                      <td>$3,410</td>
+                      <td>$6,183</td>
+                      <td>$11,538</td>
+                      <td>$18,999</td>
+                      <td>$29,799</td>
+                      <td>$45,539</td>
+                      <td>$67,632</td>
+                      <td>$94,246</td>
+                      <td>$122,520</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Sub Advisory Expense</strong></td>
+                      <td>$—</td>
+                      <td>$1,000</td>
+                      <td>$1,750</td>
+                      <td>$3,500</td>
+                      <td>$6,600</td>
+                      <td>$11,220</td>
+                      <td>$17,408</td>
+                      <td>$26,982</td>
+                      <td>$40,474</td>
+                      <td>$56,663</td>
+                      <td>$69,058</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Net Revenue</strong></td>
+                      <td>$740</td>
+                      <td>$950</td>
+                      <td>$1,660</td>
+                      <td>$2,683</td>
+                      <td>$4,938</td>
+                      <td>$7,779</td>
+                      <td>$12,391</td>
+                      <td>$18,556</td>
+                      <td>$27,159</td>
+                      <td>$37,583</td>
+                      <td>$53,462</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Other Expenses</strong></td>
+                      <td>$723</td>
+                      <td>$1,577</td>
+                      <td>$1,837</td>
+                      <td>$2,655</td>
+                      <td>$3,895</td>
+                      <td>$4,951</td>
+                      <td>$6,772</td>
+                      <td>$9,306</td>
+                      <td>$11,856</td>
+                      <td>$14,915</td>
+                      <td>$18,786</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Operating Income / EBITDA</strong></td>
+                      <td>$17</td>
+                      <td>$(627)</td>
+                      <td>$(177)</td>
+                      <td>$28</td>
+                      <td>$1,043</td>
+                      <td>$2,828</td>
+                      <td>$5,619</td>
+                      <td>$9,250</td>
+                      <td>$15,303</td>
+                      <td>$22,668</td>
+                      <td>$34,676</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Operating Income %</strong></td>
+                      <td>2%</td>
+                      <td>-32%</td>
+                      <td>-5%</td>
+                      <td>0%</td>
+                      <td>9%</td>
+                      <td>15%</td>
+                      <td>19%</td>
+                      <td>20%</td>
+                      <td>23%</td>
+                      <td>24%</td>
+                      <td>28%</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Income Tax Expense</strong></td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>$7</td>
+                      <td>$261</td>
+                      <td>$707</td>
+                      <td>$1,405</td>
+                      <td>$2,312</td>
+                      <td>$3,826</td>
+                      <td>$5,667</td>
+                      <td>$8,669</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Earnings after Taxes</strong></td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>$21</td>
+                      <td>$782</td>
+                      <td>$2,121</td>
+                      <td>$4,214</td>
+                      <td>$6,937</td>
+                      <td>$11,477</td>
+                      <td>$17,001</td>
+                      <td>$26,007</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tooltip (shared, for D3 chart) -->
+    <div class="chart-tooltip" id="chart-tooltip"></div>
+
+    <!-- The Ask -->
+    <section class="section ask">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 class="section-title">Join Our Growth</h2>
+        </div>
+
+        <div class="ask-content">
+          <div class="ask-left reveal-left">
+            <div class="ask-amount">
+              <span class="ask-currency">$</span>
+              <span class="ask-number">1</span>
+              <span class="ask-suffix">M</span>
+            </div>
+            <p class="ask-type">SAFE Note</p>
+            <p class="ask-desc">Growth capital to scale our three pillars and accelerate our impact on the $5T financing gap.</p>
+            <div class="ask-terms">
+              <div class="ask-term">
+                <span class="ask-term-value">$11M</span>
+                <span class="ask-term-label">Valuation Cap</span>
+              </div>
+              <div class="ask-term">
+                <span class="ask-term-value">10X</span>
+                <span class="ask-term-label">Target Return</span>
+              </div>
+              <div class="ask-term">
+                <span class="ask-term-value">12-18</span>
+                <span class="ask-term-label">Month Runway</span>
+              </div>
+            </div>
+          </div>
+          <div class="ask-right reveal-right">
+            <h4 class="ask-use-title">Use of Funds</h4>
+            <ul class="ask-use-list">
+              <li>Scale Strategic Advisory practice</li>
+              <li>Launch LEBEC Capital Partners (first $50M portfolio)</li>
+              <li>Expand Narrative Change initiatives</li>
+              <li>Build operational infrastructure</li>
+            </ul>
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+
+    <footer class="disclaimer-footer">
+      <div class="container">
+        <h4 class="disclaimer-title">Disclaimer</h4>
+        <p>This presentation (the "Presentation") contains proprietary and confidential information and is intended solely for the use of the addressee.</p>
+        <p>While LEBEC has endeavored to include information it believes to be reliable and relevant, no representation or warranty, express or implied, is made as to the accuracy or completeness of such information contained in this Presentation. LEBEC, including its respective officers, directors, partners, principals, employees, agents, representatives or affiliates (collectively, the "Representatives"), expressly disclaim any and all liability which may be based on such information, including any errors therein or omissions therefrom. Nothing contained in this Presentation is or should be relied upon as a promise or representation as to the future. Any representations or warranties with respect to LEBEC will be reflected in a written definitive agreement and the closing documents. The recipient acknowledges that the Representatives will not be subject to any liability based on the information contained in this Presentation, errors or omissions therein, whether or not the Representatives knew or should have known of any such errors or omissions from this Presentation.</p>
+        <p>This Presentation is not intended as an offer or solicitation for the purchase or sale of any financial instrument, or security, or as an official confirmation of any transaction. If you are not the intended recipient, you are strictly prohibited from disclosing, copying, distributing or using any of this information. If you received this communication in error, please contact the sender immediately and destroy the material in its entirety, whether electronic or hard copy. To the extent any investment return or other historical return information is included in this email, please note that past performance is not indicative of future results.</p>
+        <div class="disclaimer-copyright">&copy; 2026 LEBEC. All rights reserved.</div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Team Bio Modal -->
+  <div class="bio-modal-overlay" id="bio-modal">
+    <div class="bio-modal">
+      <button class="bio-modal-close" id="bio-modal-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="bio-modal-content">
+        <div class="bio-modal-header">
+          <img src="" alt="" class="bio-modal-photo" id="bio-modal-photo">
+          <div class="bio-modal-title">
+            <h2 id="bio-modal-name"></h2>
+            <p id="bio-modal-role"></p>
+          </div>
+        </div>
+        <div class="bio-modal-body" id="bio-modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── Password Gate ───
+    (function() {
+      var gate = document.getElementById('gate');
+      var main = document.getElementById('main');
+      var form = document.getElementById('gate-form');
+      var input = document.getElementById('gate-input');
+      var error = document.getElementById('gate-error');
+      var CODE = 'lebecinvest';
+
+      // Check if already authenticated this session
+      if (sessionStorage.getItem('lebec-auth') === '1') {
+        gate.style.display = 'none';
+        main.style.display = 'block';
+        document.addEventListener('DOMContentLoaded', initPage);
+        return;
+      }
+
+      // Hide main content until authenticated
+      main.style.display = 'none';
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value === CODE) {
+          sessionStorage.setItem('lebec-auth', '1');
+          gate.style.opacity = '0';
+          gate.style.transition = 'opacity 0.6s ease';
+          setTimeout(function() {
+            gate.style.display = 'none';
+            main.style.display = 'block';
+            initPage();
+          }, 600);
+        } else {
+          error.textContent = 'Invalid access code';
+          input.value = '';
+          input.focus();
+        }
+      });
+
+      input.focus();
+    })();
+
+    // Initialize on page load (called after gate or if already authenticated)
+    if (sessionStorage.getItem('lebec-auth') === '1') {
+      document.addEventListener('DOMContentLoaded', initPage);
+    }
+
+    function initPage() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Initialize P5.js hero sketch
+      if (typeof initHeroSketch === 'function') {
+        initHeroSketch();
+      }
+
+      // Hero animations for original hero
+      gsap.to('.hero-logo-group', {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power3.out'
+      });
+
+      gsap.to('.scroll-indicator', {
+        opacity: 1,
+        duration: 1,
+        delay: 1,
+        ease: 'power3.out'
+      });
+
+      // Build waffle chart (original animation)
+      initGapChart();
+
+      // Initialize team bio modal
+      initTeamCarousel();
+
+      // Initialize revenue tabs
+      initRevenueTabs();
+
+      // Initialize financial projections chart
+      initFinancialsChart();
+
+      // Scroll reveals
+      const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+      reveals.forEach(el => {
+        gsap.to(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleClass: 'active'
+          }
+        });
+      });
+
+      // Stagger animations
+      const staggers = document.querySelectorAll('.stagger');
+      staggers.forEach(el => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 85%',
+          onEnter: () => el.classList.add('active')
+        });
+      });
+    }
+
+    function initGapChart() {
+      const grid = document.getElementById('waffle-grid');
+      if (!grid) return;
+
+      grid.innerHTML = '';
+
+      // 100 cells, each = $50B
+      // Philanthropy: 6 cells ($0.3T)
+      // Traditional: 24 cells ($1.2T)
+      // Gap: 70 cells ($3.5T)
+      const cells = [];
+      for (let i = 0; i < 6; i++) cells.push('philanthropy');
+      for (let i = 0; i < 24; i++) cells.push('traditional');
+      for (let i = 0; i < 70; i++) cells.push('gap');
+
+      // Create all cells first (without color classes)
+      cells.forEach((type) => {
+        const cell = document.createElement('div');
+        cell.className = 'waffle-cell';
+        cell.dataset.type = type;
+        grid.appendChild(cell);
+      });
+
+      // Animate cells on scroll
+      ScrollTrigger.create({
+        trigger: grid,
+        start: 'top 75%',
+        onEnter: () => {
+          const cellElements = grid.querySelectorAll('.waffle-cell');
+          cellElements.forEach((cell, i) => {
+            gsap.to(cell, {
+              delay: i * 0.05,
+              duration: 0.5,
+              onStart: () => cell.classList.add(cell.dataset.type)
+            });
+          });
+        }
+      });
+    }
+
+    // Team bio data
+    const teamBios = {
+      0: {
+        name: "Alix Lebec",
+        role: "Founder & CEO",
+        photo: "images/Alix.png",
+        bio: `<p>Alix Lebec brings 20+ years of experience in innovative finance, philanthropy, and entrepreneurship. As a founding executive at WaterEquity\u2014alongside Gary White, Matt Damon, and a global leadership team\u2014she built a highly successful global asset manager investing in solutions to the water crisis in emerging markets. Her leadership at Water.org and WaterEquity mobilized $260M in investment and philanthropic capital.</p>
+        <p>In 2020, Alix founded LEBEC, a women-led platform harnessing innovative finance and technology to unlock $5B in AUM over the next decade for a resilient, healthy global economy and planet. Through its three integrated pillars, LEBEC advises and co-creates blended capital strategies, business models, and narratives with clients (asset owners and social entrepreneurs); builds and invests in diversified, private market fund portfolios (led by LEBEC Capital Partners) to scale climate solutions; and powers narrative change initiatives. At LEBEC, Alix sets the vision, and oversees the team, strategy, business and operational blueprint, and capital mobilization efforts.</p>
+        <p>Previously, Alix held leadership roles developing education, communications, and community development programs at The World Bank in Paris and Southeast Asia and the Clinton Global Initiative.</p>
+        <p>A Worthy100 Awardee (Worth Magazine and L\u2019Or\u00e9al Group), she serves as a Limited Partner at Polymath Ventures and global judge for Reckitt\u2019s social entrepreneur accelerator (a Fortune 500 company), and is a member of 100 Women in Finance. Alix has been featured in Forbes, Inc. Magazine, and the Financial Times. She holds a Master\u2019s degree from the London School of Economics with Merit and a B.A. in International Business from the American University of Paris with Honors, where she also received the Distinguished Alumni Award in 2025.</p>`
+      },
+      1: {
+        name: "Julia Wilkinson",
+        role: "Managing Partner & Chief Investment Officer",
+        photo: "images/Julia.png",
+        bio: `<p>Julia Wilkinson is a seasoned investment professional with 20 years of global experience in finance, portfolio construction, and investment strategy. Born in Mexico City and having worked extensively across Latin America, she brings deep cross-cultural expertise and a sharp global lens to every mandate.</p>
+        <p>Julia has built a distinguished career deploying capital toward groundbreaking solutions, powering successful startups, and leading investment strategies across sectors and asset classes. Her expertise spans due diligence, fund and portfolio structuring, financial modeling, and values-aligned financial strategy. She has traded across equities, debt, currencies, and derivatives in public and private markets, and allocated capital to investment-grade bonds, hedge funds, private credit, real estate, and private equity. She also spent two years in venture capital and has made direct angel investments in four early-stage companies.</p>
+        <p>At LEBEC, Julia oversees the development of innovative finance strategies, frameworks, and metrics; financial modeling; due diligence; and impact reporting. At LEBEC Capital Partners, Julia sets and oversees the investment strategy, construction of and investments in private market fund portfolios, due diligence, the team, day-to-day business operations, and reporting. Julia also develops blended capital strategies and vehicles advancing solutions with partners: Integral Assets and ImpactAssets.</p>
+        <p>Earlier in her career, Julia sharpened her financial acumen at Goldman Sachs, where she was part of a team managing $1.5B in assets for ultra-high-net-worth and institutional clients through multi-manager global portfolios. She has also advised leading asset managers, including Manulife, Sonen Capital, MacFarlane Partners, ThirdWay, Women\u2019s World Banking, and Endurance 28.</p>
+        <p>Julia holds a Master\u2019s degree from Columbia University and a Bachelor\u2019s from the University of Pennsylvania. She is trilingual in English, Portuguese, and Spanish and serves as a mentor with Endeavor Global.</p>`
+      },
+      2: {
+        name: "Rafia Qureshi",
+        role: "Managing Director, EMEA & Asia",
+        photo: "images/Rafia.png",
+        bio: `<p>Rafia Qureshi is a seasoned leader in philanthropy and innovative finance, with a proven 20 year track record of driving systemic change across key stakeholders: corporate, foundation, financial institutions, and non-profits. Her expertise spans the full investment lifecycle\u2014from structuring catalytic capital strategies to managing multi-million-dollar social impact portfolios. She has worked with development finance institutions, foundations, and social enterprises to align capital with impact. As CEO of The Womanity Foundation, she repositioned the organization as a leader in gender-lens investing, integrating venture philanthropy and social investment into its funding model.</p>
+        <p>Rafia spent a majority of her career at JPMorgan Chase. There, she jointly oversaw $250M annually in social investments through the investment bank\u2019s Foundation across Europe, Middle East, and Africa (EMEA). She expanded the firm\u2019s corporate social investment portfolio across 12 emerging markets, and spun out a social enterprise in South Africa with an investment of $150M USD. She then deepened her investment expertise at Gatsby Charitable Foundation, where she evaluated investments such as the $25M African Agricultural Capital Fund. Her early experience in Venture Capital (VC) at DN Capital (an early stage VC firm with AUM in excess of $1B) and Dow Jones Venture One grounded her journey in investment analysis, fundraising, and investor relations. Rafia was a key member of DN Capital\u2019s investor relations team, supporting the firm to raise its second fund valued in excess of \u20ac40M.</p>
+        <p>At LEBEC and LEBEC Capital Partners, Rafia leads on strategy in EMEA and Asia, client relationships, investor engagement and relations, and capital mobilization efforts. This includes overseeing performance communication and market positioning. Fluent in multiple languages and holding degrees from the London School of Economics and Boston University, Rafia brings a global perspective and deep expertise in designing scalable, high-impact investment solutions.</p>`
+      },
+      3: {
+        name: "Hannah Kovich",
+        role: "Managing Director & Senior Investment Analyst",
+        photo: "images/Hannah.png",
+        bio: `<p>Hannah Kovich brings 15+ years of expertise in innovative finance, market research, and investment and impact analysis\u2014specializing in catalytic philanthropy and innovative investment structures. At LEBEC, Hannah has co-led the development of innovative finance strategies for different asset owners, managers, and social entrepreneurs including the Sustainable Ocean Alliance, SunCulture, The Miami Foundation, Manulife Investment Management, and MacFarlane Partners, including creating a portfolio approach to impact for Fortune 500 Company Reckitt.</p>
+        <p>As Managing Director and Senior Investment Analyst at LEBEC Capital Partners, Hannah conducts market research, due diligence, and financial analysis to identify high-potential funds and investments transforming key sectors. She also contributes to investment thesis development, portfolio construction, and risk assessments.</p>
+        <p>Prior to LEBEC, Hannah was also on the founding team at WaterEquity\u2014supporting the development of blended capital structures, market research across different asset classes, investor relations management, reporting, and fund operations. Previously at Water.org, she managed a $60M+ portfolio of global funders, including the IKEA Foundation, leading teams through grant development and impact reporting. At Harvesters (The Community Food Network), she developed collaborative approaches to program management and analysis. Hannah holds a B.A. in Political Science from Kansas State University and is passionate about bringing resources to families in need globally.</p>`
+      }
+    };
+
+    function initTeamCarousel() {
+      const cards = document.querySelectorAll('.team-card');
+      const modal = document.getElementById('bio-modal');
+      const modalClose = document.getElementById('bio-modal-close');
+      const modalPhoto = document.getElementById('bio-modal-photo');
+      const modalName = document.getElementById('bio-modal-name');
+      const modalRole = document.getElementById('bio-modal-role');
+      const modalBody = document.getElementById('bio-modal-body');
+
+      if (!modal) return;
+
+      // Open modal on card click
+      cards.forEach((card) => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          // Click anywhere on card (including Read Bio) opens modal
+
+          const index = card.getAttribute('data-index');
+          const bio = teamBios[index];
+
+          if (bio) {
+            modalPhoto.src = bio.photo;
+            modalPhoto.alt = bio.name;
+            modalName.textContent = bio.name;
+            modalRole.textContent = bio.role;
+            modalBody.innerHTML = bio.bio;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      });
+
+      // Close modal
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      modalClose.addEventListener('click', closeModal);
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+    }
+
+    // ============================================
+    // FLIP CARD TOGGLE
+    // ============================================
+    function toggleFlip(cardId) {
+      const card = document.getElementById(cardId);
+      card.classList.toggle('flipped');
+    }
+
+    // ============================================
+    // FINANCIAL PROJECTIONS CHART
+    // ============================================
+    function initFinancialsChart() {
+      const container = d3.select('#chart-financials');
+      if (!container.node()) return;
+
+      const projData = [
+        { year: 0,  yearLabel: 'Year 0',  aum: 0,       totalRevenue: 740,    subAdvisory: 0,     netRevenue: 740,   otherExpenses: 723,   ebitda: 17,       margin: 2,   taxExpense: null, earningsAfterTax: null },
+        { year: 1,  yearLabel: 'Year 1',  aum: 50700,   totalRevenue: 1950,   subAdvisory: 1000,  netRevenue: 950,   otherExpenses: 1577,  ebitda: -626.90,  margin: -32, taxExpense: null, earningsAfterTax: null },
+        { year: 2,  yearLabel: 'Year 2',  aum: 100910,  totalRevenue: 3410,   subAdvisory: 1750,  netRevenue: 1660,  otherExpenses: 1837,  ebitda: -177.01,  margin: -5,  taxExpense: null, earningsAfterTax: null },
+        { year: 3,  yearLabel: 'Year 3',  aum: 201183,  totalRevenue: 6183,   subAdvisory: 3500,  netRevenue: 2683,  otherExpenses: 2655,  ebitda: 27.60,    margin: 0,   taxExpense: 7,    earningsAfterTax: 21 },
+        { year: 4,  yearLabel: 'Year 4',  aum: 401538,  totalRevenue: 11538,  subAdvisory: 6600,  netRevenue: 4938,  otherExpenses: 3895,  ebitda: 1043.05,  margin: 9,   taxExpense: 261,  earningsAfterTax: 782 },
+        { year: 5,  yearLabel: 'Year 5',  aum: 681999,  totalRevenue: 18999,  subAdvisory: 11220, netRevenue: 7779,  otherExpenses: 4951,  ebitda: 2828.47,  margin: 15,  taxExpense: 707,  earningsAfterTax: 2121 },
+        { year: 6,  yearLabel: 'Year 6',  aum: 1090599, totalRevenue: 29799,  subAdvisory: 17408, netRevenue: 12391, otherExpenses: 6772,  ebitda: 5618.58,  margin: 19,  taxExpense: 1405, earningsAfterTax: 4214 },
+        { year: 7,  yearLabel: 'Year 7',  aum: 1689779, totalRevenue: 45539,  subAdvisory: 26982, netRevenue: 18556, otherExpenses: 9306,  ebitda: 9249.97,  margin: 20,  taxExpense: 2312, earningsAfterTax: 6937 },
+        { year: 8,  yearLabel: 'Year 8',  aum: 2533992, totalRevenue: 67632,  subAdvisory: 40474, netRevenue: 27159, otherExpenses: 11856, ebitda: 15302.68, margin: 23,  taxExpense: 3826, earningsAfterTax: 11477 },
+        { year: 9,  yearLabel: 'Year 9',  aum: 3547150, totalRevenue: 94246,  subAdvisory: 56663, netRevenue: 37583, otherExpenses: 14915, ebitda: 22668.37, margin: 24,  taxExpense: 5667, earningsAfterTax: 17001 },
+        { year: 10, yearLabel: 'Year 10', aum: 4611295, totalRevenue: 122520, subAdvisory: 69058, netRevenue: 53462, otherExpenses: 18786, ebitda: 34675.66, margin: 28,  taxExpense: 8669, earningsAfterTax: 26007 }
+      ];
+
+      const colors = {
+        aum: '#362983',
+        revenue: '#6a5acb',
+        ebitda: '#8577d4',
+        axisLabel: '#4a4a4a',
+        axisLabelAlt: '#4a4a4a'
+      };
+
+      const formatCurrencyK = (d) => {
+        const abs = Math.abs(d);
+        const sign = d < 0 ? '-' : '';
+        if (abs >= 1000) return `${sign}$${(abs/1000).toFixed(1)}M`;
+        return `${sign}$${abs.toFixed(0)}K`;
+      };
+      const formatAUM = (d) => {
+        if (d >= 1000000) return `$${(d/1000000).toFixed(1)}B`;
+        if (d >= 1000) return `$${(d/1000).toFixed(0)}M`;
+        return `$${d.toFixed(0)}K`;
+      };
+
+      const chartTooltip = d3.select('#chart-tooltip');
+
+      function showChartTooltip(event, content) {
+        chartTooltip
+          .html(content)
+          .classed('active', true)
+          .style('left', (event.pageX + 15) + 'px')
+          .style('top', (event.pageY - 10) + 'px');
+      }
+
+      function hideChartTooltip() {
+        chartTooltip.classed('active', false);
+      }
+
+      function buildChart() {
+        container.selectAll('*').remove();
+
+        const width = container.node().getBoundingClientRect().width;
+        const height = 440;
+        const margin = { top: 40, right: 60, bottom: 90, left: 80 };
+
+        const svg = container.append('svg')
+          .attr('width', width)
+          .attr('height', height);
+
+        const chartWidth = width - margin.left - margin.right;
+        const chartHeight = height - margin.top - margin.bottom;
+
+        const g = svg.append('g')
+          .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        // X axis: evenly spaced years
+        const x = d3.scaleLinear().domain([0, 10]).range([0, chartWidth]);
+
+        // Y axis: Revenue/EBITDA — extends into negative
+        const yMin = d3.min(projData, d => d.ebitda) * 1.5;
+        const yMax = d3.max(projData, d => d.netRevenue) * 1.15;
+        const y = d3.scaleLinear()
+          .domain([yMin, yMax])
+          .range([chartHeight, 0]);
+
+        // Grid lines
+        g.append('g').attr('class', 'grid')
+          .call(d3.axisLeft(y).tickSize(-chartWidth).tickFormat('').ticks(8));
+
+        // Zero line (horizontal line at y=0)
+        const zeroY = y(0);
+        g.append('line')
+          .attr('x1', 0).attr('x2', chartWidth)
+          .attr('y1', zeroY).attr('y2', zeroY)
+          .attr('stroke', '#999').attr('stroke-width', 1.5)
+          .attr('stroke-dasharray', '6,3');
+
+        // Primary X axis: Year labels
+        g.append('g').attr('class', 'axis')
+          .attr('transform', `translate(0,${chartHeight})`)
+          .call(d3.axisBottom(x).ticks(11).tickFormat(d => `Yr ${d}`));
+
+        // Secondary X labels: AUM values below each year tick
+        g.selectAll('.aum-label')
+          .data(projData)
+          .enter()
+          .append('text')
+          .attr('class', 'aum-label')
+          .attr('x', d => x(d.year))
+          .attr('y', chartHeight + 38)
+          .attr('text-anchor', 'middle')
+          .attr('fill', colors.revenue)
+          .attr('font-size', '10px')
+          .attr('font-weight', '500')
+          .text(d => formatAUM(d.aum));
+
+        // "AUM" label for the secondary row
+        g.append('text')
+          .attr('x', -10).attr('y', chartHeight + 38)
+          .attr('text-anchor', 'end')
+          .attr('fill', colors.revenue)
+          .attr('font-size', '10px')
+          .attr('font-weight', '600')
+          .text('AUM →');
+
+        // Y Axis (Revenue/EBITDA)
+        g.append('g').attr('class', 'axis')
+          .call(d3.axisLeft(y).ticks(8).tickFormat(d => formatCurrencyK(d)));
+
+        g.append('text')
+          .attr('transform', 'rotate(-90)')
+          .attr('y', -65).attr('x', -chartHeight / 2)
+          .attr('fill', colors.axisLabel)
+          .attr('text-anchor', 'middle').attr('font-size', '12px')
+          .text('Net Revenue / EBITDA ($K)');
+
+        // Line generators — x is year-based
+        const lineRevenue = d3.line().x(d => x(d.year)).y(d => y(d.netRevenue)).curve(d3.curveMonotoneX);
+        const lineEbitda = d3.line().x(d => x(d.year)).y(d => y(d.ebitda)).curve(d3.curveMonotoneX);
+
+        // Draw lines
+        const pathRevenue = g.append('path').datum(projData).attr('class', 'line line-revenue').attr('d', lineRevenue).attr('data-metric', 'revenue');
+        const pathEbitda = g.append('path').datum(projData).attr('class', 'line line-ebitda').attr('d', lineEbitda).attr('data-metric', 'ebitda');
+
+        // Animate lines
+        [pathRevenue, pathEbitda].forEach(path => {
+          const length = path.node().getTotalLength();
+          path.attr('stroke-dasharray', length).attr('stroke-dashoffset', length)
+            .transition().duration(1500).ease(d3.easeQuadOut).attr('stroke-dashoffset', 0);
+        });
+
+        // Dots for Revenue
+        g.selectAll('.dot-revenue').data(projData).enter().append('circle')
+          .attr('class', 'dot').attr('cx', d => x(d.year)).attr('cy', d => y(d.netRevenue))
+          .attr('r', 5).attr('fill', colors.revenue).attr('data-metric', 'revenue')
+          .on('mouseover', function(event, d) {
+            showChartTooltip(event, `
+              <div class="tooltip-title">${d.yearLabel} — AUM: ${formatAUM(d.aum)}</div>
+              <div class="tooltip-row"><span class="tooltip-label">Net Revenue:</span><span class="tooltip-value">${formatCurrencyK(d.netRevenue)}</span></div>
+              <div class="tooltip-row"><span class="tooltip-label">EBITDA:</span><span class="tooltip-value">${formatCurrencyK(d.ebitda)}</span></div>
+              <div class="tooltip-row"><span class="tooltip-label">Margin:</span><span class="tooltip-value">${d.margin}%</span></div>
+            `);
+          })
+          .on('mouseout', hideChartTooltip);
+
+        // Dots for EBITDA
+        g.selectAll('.dot-ebitda').data(projData).enter().append('circle')
+          .attr('class', 'dot').attr('cx', d => x(d.year)).attr('cy', d => y(d.ebitda))
+          .attr('r', 5).attr('fill', colors.ebitda).attr('data-metric', 'ebitda')
+          .on('mouseover', function(event, d) {
+            showChartTooltip(event, `
+              <div class="tooltip-title">${d.yearLabel} — AUM: ${formatAUM(d.aum)}</div>
+              <div class="tooltip-row"><span class="tooltip-label">EBITDA:</span><span class="tooltip-value">${formatCurrencyK(d.ebitda)}</span></div>
+              <div class="tooltip-row"><span class="tooltip-label">Margin:</span><span class="tooltip-value">${d.margin}%</span></div>
+            `);
+          })
+          .on('mouseout', hideChartTooltip);
+
+        // Toggle controls
+        d3.selectAll('#controls-financials .toggle-btn').on('click', function() {
+          const btn = d3.select(this);
+          const metric = btn.attr('data-metric');
+          const isActive = btn.classed('active');
+          btn.classed('active', !isActive);
+          g.selectAll(`[data-metric="${metric}"]`)
+            .transition().duration(300).style('opacity', isActive ? 0 : 1);
+        });
+      }
+
+      // Build on scroll (when section is visible)
+      let chartBuilt = false;
+      ScrollTrigger.create({
+        trigger: '#chart-financials',
+        start: 'top 90%',
+        onEnter: () => {
+          if (!chartBuilt) {
+            buildChart();
+            chartBuilt = true;
+          }
+        }
+      });
+
+      // Resize handler
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        if (!chartBuilt) return;
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          buildChart();
+        }, 250);
+      });
+    }
+
+    function initRevenueTabs() {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+
+      if (!tabBtns.length) return;
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetTab = btn.dataset.tab;
+
+          // Update buttons
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          // Update panels
+          tabPanels.forEach(panel => {
+            panel.classList.remove('active');
+            if (panel.id === targetTab) {
+              panel.classList.add('active');
+            }
+          });
+        });
+      });
+    }
+  </script>
+
+  <!-- Hero Animation Script -->
+  <script src="js/hero-sketch.js"></script>
+
+  <!-- Green Rain on Gap Section (hidden on mobile via CSS) -->
+  <script>
+  (function() {
+    var el = document.getElementById('gap-rain');
+    if (!el || window.innerWidth < 969) return;
+
+    new p5(function(p) {
+      var G = [63, 161, 98];
+      var columns = [];
+
+      p.setup = function() {
+        var c = p.createCanvas(el.offsetWidth, el.offsetHeight);
+        c.parent('gap-rain');
+        p.frameRate(30);
+        p.noStroke();
+        for (var i = 0; i < 30; i++) columns.push(makeCol(true));
+      };
+
+      function makeCol(init) {
+        var size = p.random([5, 6, 8, 10, 12]);
+        var numB = p.floor(p.random(4, 14));
+        var gap = p.random(3, 8);
+        var blocks = [];
+        for (var b = 0; b < numB; b++) blocks.push(p.random(60, 255));
+        return {
+          x: p.random(p.width * 0.05, p.width * 0.95),
+          y: init ? p.random(-600, p.height * 0.3) : p.random(-800, -100),
+          size: size, gap: gap,
+          speed: p.map(size, 5, 12, 1, 3),
+          blocks: blocks
+        };
+      }
+
+      p.draw = function() {
+        p.clear();
+        p.noStroke();
+        for (var i = 0; i < columns.length; i++) {
+          var col = columns[i];
+          for (var b = 0; b < col.blocks.length; b++) {
+            var by = col.y + b * (col.size + col.gap);
+            if (by < -col.size || by > p.height) continue;
+            p.fill(G[0], G[1], G[2], col.blocks[b]);
+            p.rect(col.x, by, col.size, col.size);
+          }
+          col.y += col.speed;
+          if (col.y > p.height + 20) Object.assign(col, makeCol(false));
+        }
+      };
+
+      p.windowResized = function() {
+        if (window.innerWidth < 969) return;
+        p.resizeCanvas(el.offsetWidth, el.offsetHeight);
+      };
+    });
+  })();
+  </script>
+
+  <!-- Style Tuner: Visual CSS editor (remove for production) -->
+  <script src="../tools/style-tuner.js"></script>
+
+  <!-- Text Tuner: Visual text editor (remove for production) -->
+  <script src="../tools/text-tuner.js"></script>
+</body>
+</html>
